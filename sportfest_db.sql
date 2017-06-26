@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.6.30, for debian-linux-gnu (x86_64)
 --
--- Host: 172.20.3.2    Database: sportfest
+-- Host: localhost    Database: sportfest
 -- ------------------------------------------------------
--- Server version	5.5.5-10.1.22-MariaDB
+-- Server version	5.6.30-1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -18,9 +18,6 @@
 --
 -- Table structure for table `anmeldung`
 --
-
-CREATE DATABASE sportfest;
-USE sportfest;
 
 DROP TABLE IF EXISTS `anmeldung`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -274,7 +271,9 @@ CREATE TABLE `regel` (
   `RegelID` int(11) NOT NULL AUTO_INCREMENT,
   `expr` varchar(2048) DEFAULT NULL,
   `DisziplinID` int(11) NOT NULL,
-  PRIMARY KEY (`RegelID`)
+  `idx` int(11) NOT NULL,
+  PRIMARY KEY (`RegelID`),
+  UNIQUE KEY `unique_idx` (`DisziplinID`,`idx`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -284,7 +283,7 @@ CREATE TABLE `regel` (
 
 LOCK TABLES `regel` WRITE;
 /*!40000 ALTER TABLE `regel` DISABLE KEYS */;
-INSERT INTO `regel` VALUES (1,'test',2),(2,'test3',3),(3,'test2',2),(4,'test1',2),(5,'test3',2);
+INSERT INTO `regel` VALUES (1,'test',2,1),(2,'test3',3,1),(3,'test2',2,2),(4,'test1',2,3),(5,'test3',2,4);
 /*!40000 ALTER TABLE `regel` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1190,4 +1189,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-23 15:52:13
+-- Dump completed on 2017-06-26 18:11:46
