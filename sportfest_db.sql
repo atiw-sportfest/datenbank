@@ -915,10 +915,11 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`fs151`@`%` PROCEDURE `RegelAnlegen`(
 inexpr varchar(255),
-indid int
+indid int,
+inidx int
 )
 BEGIN
-	insert regel (expr,Disziplinid) values(inexpr,indid);
+	insert regel (expr,Disziplinid,idx) values(inexpr,indid,idx);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -956,7 +957,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`fs151`@`%` PROCEDURE `RegelEinerDisziplinAnzeigen`(did int)
 BEGIN
-select * from regel where disziplinid=did;
+select * from regel where disziplinid=did order by disziplinid, idx;
 
 END ;;
 DELIMITER ;
@@ -995,7 +996,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`fs151`@`%` PROCEDURE `RegelnAnzeigen`()
 BEGIN
-Select * from Regel;
+Select * from Regel order by disziplinid, idx;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
