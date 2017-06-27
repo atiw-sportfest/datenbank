@@ -78,7 +78,7 @@ CREATE TABLE `disziplin` (
   `teamleistung` int(1) DEFAULT NULL,
   `KontrahentenAnzahl` int(11) DEFAULT NULL,
   PRIMARY KEY (`DisziplinID`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -100,7 +100,7 @@ CREATE TABLE `ergebnis` (
   KEY `FKErgebnis76351` (`BewertungseinheitID`),
   CONSTRAINT `FKErgebnis303121` FOREIGN KEY (`DisziplinID`) REFERENCES `disziplin` (`DisziplinID`),
   CONSTRAINT `FKErgebnis76351` FOREIGN KEY (`BewertungseinheitID`) REFERENCES `bewertungseinheit` (`BewertungseinheitID`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -152,7 +152,7 @@ CREATE TABLE `leistung` (
   CONSTRAINT `FKLeistung43106` FOREIGN KEY (`KlassenID`) REFERENCES `klasse` (`KlassenID`),
   CONSTRAINT `FKLeistung447192` FOREIGN KEY (`DisziplinID`) REFERENCES `disziplin` (`DisziplinID`),
   CONSTRAINT `FKLeistung786079` FOREIGN KEY (`SchülerID`) REFERENCES `schüler` (`SchülerID`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -185,8 +185,11 @@ CREATE TABLE `regel` (
   `RegelID` int(11) NOT NULL AUTO_INCREMENT,
   `expr` varchar(2048) DEFAULT NULL,
   `DisziplinID` int(11) NOT NULL,
-  PRIMARY KEY (`RegelID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `idx` int(11) DEFAULT NULL,
+  `points` int(11) DEFAULT NULL,
+  PRIMARY KEY (`RegelID`),
+  UNIQUE KEY `idx_uniqe` (`DisziplinID`,`idx`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1150,7 +1153,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`fs151`@`%` PROCEDURE `KlassenAnzeigen`()
 BEGIN
-	select * from klasse;
+	select * from klasse order by Name;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1396,7 +1399,7 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `RegelAnlegen` */;
+/*!50003 DROP PROCEDURE IF EXISTS `Regelanlegen` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -1406,12 +1409,13 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `RegelAnlegen`(
-inexpr varchar(255),
-indid int
+CREATE DEFINER=`fs151`@`%` PROCEDURE `Regelanlegen`(
+    inexpr varchar(255),
+    indid int,
+    inidx int
 )
 BEGIN
-	insert regel (expr,Disziplinid) values(inexpr,indid);
+	insert into regel (expr,DisziplinID,idx) values (inexpr,indid,inidx);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1430,27 +1434,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`fs151`@`%` PROCEDURE `RegelAnzeigen`(rid int)
 BEGIN
-Select * from Regel where regelid=rid;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `RegelEinerDisziplinAnzeigen` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `RegelEinerDisziplinAnzeigen`(did int)
-BEGIN
-select * from regel where disziplinid=did;
-
+Select * from Regel where regelid=rid order by disziplinid, idx;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1488,7 +1472,27 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`fs151`@`%` PROCEDURE `RegelnAnzeigen`()
 BEGIN
-Select * from Regel;
+Select * from Regel order by disziplinid, idx;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `RegelnEinerDisziplinAnzeigen` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`fs151`@`%` PROCEDURE `RegelnEinerDisziplinAnzeigen`(did int)
+BEGIN
+select * from regel where disziplinid=did order by idx;
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1781,4 +1785,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-27 13:51:10
+-- Dump completed on 2017-06-27 14:52:21
