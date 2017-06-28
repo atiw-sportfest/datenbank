@@ -24,11 +24,11 @@ DROP TABLE IF EXISTS `anmeldung`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `anmeldung` (
   `DisziplinID` int(11) NOT NULL,
-  `SchülerID` int(11) NOT NULL,
-  KEY `FKAnmeldung256515` (`DisziplinID`),
-  KEY `FKAnmeldung976756` (`SchülerID`),
-  CONSTRAINT `FKAnmeldung256515` FOREIGN KEY (`DisziplinID`) REFERENCES `disziplin` (`DisziplinID`),
-  CONSTRAINT `FKAnmeldung976756` FOREIGN KEY (`SchülerID`) REFERENCES `schüler` (`SchülerID`)
+  `SchuelerID` int(11) NOT NULL,
+  KEY `FKanmeldung224868` (`DisziplinID`),
+  KEY `FKanmeldung496997` (`SchuelerID`),
+  CONSTRAINT `FKanmeldung224868` FOREIGN KEY (`DisziplinID`) REFERENCES `disziplin` (`DisziplinID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FKanmeldung496997` FOREIGN KEY (`SchuelerID`) REFERENCES `schueler` (`SchuelerID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -48,20 +48,6 @@ CREATE TABLE `benutzer` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `bewertungseinheit`
---
-
-DROP TABLE IF EXISTS `bewertungseinheit`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `bewertungseinheit` (
-  `BewertungseinheitID` int(11) NOT NULL AUTO_INCREMENT,
-  `Name` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`BewertungseinheitID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `disziplin`
 --
 
@@ -78,7 +64,25 @@ CREATE TABLE `disziplin` (
   `teamleistung` int(1) DEFAULT NULL,
   `KontrahentenAnzahl` int(11) DEFAULT NULL,
   PRIMARY KEY (`DisziplinID`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `disziplin_variable`
+--
+
+DROP TABLE IF EXISTS `disziplin_variable`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `disziplin_variable` (
+  `var_id` int(11) NOT NULL,
+  `disz_id` int(11) NOT NULL,
+  PRIMARY KEY (`var_id`,`disz_id`),
+  KEY `FKdisziplin_56510` (`var_id`),
+  KEY `FKdisziplin_395990` (`disz_id`),
+  CONSTRAINT `FKdisziplin_395990` FOREIGN KEY (`disz_id`) REFERENCES `disziplin` (`DisziplinID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FKdisziplin_56510` FOREIGN KEY (`var_id`) REFERENCES `variable` (`var_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -89,18 +93,15 @@ DROP TABLE IF EXISTS `ergebnis`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ergebnis` (
-  `ErgebnisID` int(11) NOT NULL AUTO_INCREMENT,
-  `DisziplinID` int(11) NOT NULL,
-  `Name` varchar(100) DEFAULT NULL,
-  `Beschreibung` varchar(2048) DEFAULT NULL,
-  `Variablenname` varchar(100) DEFAULT NULL,
-  `BewertungseinheitID` int(11) NOT NULL,
-  PRIMARY KEY (`ErgebnisID`),
-  KEY `FKErgebnis303121` (`DisziplinID`),
-  KEY `FKErgebnis76351` (`BewertungseinheitID`),
-  CONSTRAINT `FKErgebnis303121` FOREIGN KEY (`DisziplinID`) REFERENCES `disziplin` (`DisziplinID`),
-  CONSTRAINT `FKErgebnis76351` FOREIGN KEY (`BewertungseinheitID`) REFERENCES `bewertungseinheit` (`BewertungseinheitID`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+  `LeistungID` int(11) NOT NULL,
+  `Wert` varchar(256) DEFAULT NULL,
+  `var_id` int(11) NOT NULL,
+  PRIMARY KEY (`LeistungID`,`var_id`),
+  KEY `FKergebnis239955` (`LeistungID`),
+  KEY `FKergebnis402622` (`var_id`),
+  CONSTRAINT `FKergebnis239955` FOREIGN KEY (`LeistungID`) REFERENCES `leistung` (`LeistungID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FKergebnis402622` FOREIGN KEY (`var_id`) REFERENCES `variable` (`var_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -128,7 +129,7 @@ CREATE TABLE `klasse` (
   `KlassenID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`KlassenID`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -141,36 +142,16 @@ DROP TABLE IF EXISTS `leistung`;
 CREATE TABLE `leistung` (
   `LeistungID` int(11) NOT NULL AUTO_INCREMENT,
   `DisziplinID` int(11) NOT NULL,
-  `ErgebnisID` int(11) NOT NULL,
   `KlassenID` int(11) NOT NULL,
-  `SchülerID` int(11) DEFAULT NULL,
+  `SchuelerID` int(11) DEFAULT NULL,
   `Zeitpunkt` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`LeistungID`),
-  KEY `FKLeistung447192` (`DisziplinID`),
-  KEY `FKLeistung43106` (`KlassenID`),
-  KEY `FKLeistung786079` (`SchülerID`),
-  CONSTRAINT `FKLeistung43106` FOREIGN KEY (`KlassenID`) REFERENCES `klasse` (`KlassenID`),
-  CONSTRAINT `FKLeistung447192` FOREIGN KEY (`DisziplinID`) REFERENCES `disziplin` (`DisziplinID`),
-  CONSTRAINT `FKLeistung786079` FOREIGN KEY (`SchülerID`) REFERENCES `schüler` (`SchülerID`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `leistungsergebnis`
---
-
-DROP TABLE IF EXISTS `leistungsergebnis`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `leistungsergebnis` (
-  `ErgebnisID` int(11) NOT NULL,
-  `LeistungID` int(11) NOT NULL,
-  `Wert` int(11) DEFAULT NULL,
-  PRIMARY KEY (`ErgebnisID`,`LeistungID`),
-  KEY `FKLeistungse932193` (`LeistungID`),
-  KEY `FKLeistungse201545` (`ErgebnisID`),
-  CONSTRAINT `FKLeistungse201545` FOREIGN KEY (`ErgebnisID`) REFERENCES `ergebnis` (`ErgebnisID`),
-  CONSTRAINT `FKLeistungse932193` FOREIGN KEY (`LeistungID`) REFERENCES `leistung` (`LeistungID`)
+  KEY `FKleistung910233` (`DisziplinID`),
+  KEY `FKleistung532661` (`KlassenID`),
+  KEY `FKleistung632099` (`SchuelerID`),
+  CONSTRAINT `FKleistung532661` FOREIGN KEY (`KlassenID`) REFERENCES `klasse` (`KlassenID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FKleistung632099` FOREIGN KEY (`SchuelerID`) REFERENCES `schueler` (`SchuelerID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FKleistung910233` FOREIGN KEY (`DisziplinID`) REFERENCES `disziplin` (`DisziplinID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -183,48 +164,91 @@ DROP TABLE IF EXISTS `regel`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `regel` (
   `RegelID` int(11) NOT NULL AUTO_INCREMENT,
-  `expr` varchar(2048) DEFAULT NULL,
   `DisziplinID` int(11) NOT NULL,
+  `expr` varchar(2048) DEFAULT NULL,
   `idx` int(11) DEFAULT NULL,
   `points` int(11) DEFAULT NULL,
   PRIMARY KEY (`RegelID`),
-  UNIQUE KEY `idx_uniqe` (`DisziplinID`,`idx`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+  UNIQUE KEY `regel` (`idx`),
+  KEY `FKregel50152` (`DisziplinID`),
+  CONSTRAINT `FKregel50152` FOREIGN KEY (`DisziplinID`) REFERENCES `disziplin` (`DisziplinID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `schüler`
+-- Table structure for table `schueler`
 --
 
-DROP TABLE IF EXISTS `schüler`;
+DROP TABLE IF EXISTS `schueler`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `schüler` (
-  `SchülerID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `schueler` (
+  `SchuelerID` int(11) NOT NULL AUTO_INCREMENT,
   `Vorname` varchar(50) DEFAULT NULL,
   `Nachname` varchar(50) DEFAULT NULL,
   `KlassenID` int(11) NOT NULL,
   `GeschlechtsID` int(11) NOT NULL,
-  PRIMARY KEY (`SchülerID`),
-  KEY `FKSchüler920130` (`GeschlechtsID`),
-  KEY `FKSchüler614103` (`KlassenID`),
-  CONSTRAINT `FKSchüler614103` FOREIGN KEY (`KlassenID`) REFERENCES `klasse` (`KlassenID`),
-  CONSTRAINT `FKSchüler920130` FOREIGN KEY (`GeschlechtsID`) REFERENCES `geschlecht` (`GeschlechtsID`)
+  PRIMARY KEY (`SchuelerID`),
+  KEY `FKschueler944621` (`KlassenID`),
+  KEY `FKschueler10993` (`GeschlechtsID`),
+  CONSTRAINT `FKschueler10993` FOREIGN KEY (`GeschlechtsID`) REFERENCES `geschlecht` (`GeschlechtsID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FKschueler944621` FOREIGN KEY (`KlassenID`) REFERENCES `klasse` (`KlassenID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=534 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `zustand`
+-- Table structure for table `typ`
 --
 
-DROP TABLE IF EXISTS `zustand`;
+DROP TABLE IF EXISTS `typ`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `zustand` (
-  `ZustandsID` int(11) NOT NULL AUTO_INCREMENT,
-  `Name` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`ZustandsID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+CREATE TABLE `typ` (
+  `typ_id` int(11) NOT NULL AUTO_INCREMENT,
+  `typ_name` tinytext NOT NULL,
+  `typ_descr` text,
+  `typ_typ` tinytext NOT NULL,
+  PRIMARY KEY (`typ_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `typzustand`
+--
+
+DROP TABLE IF EXISTS `typzustand`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `typzustand` (
+  `zid` int(11) NOT NULL AUTO_INCREMENT,
+  `typ_id` int(11) DEFAULT NULL,
+  `tzst_name` tinytext NOT NULL,
+  `tzst_descr` text,
+  `tzst_val` varchar(32) NOT NULL,
+  PRIMARY KEY (`zid`),
+  UNIQUE KEY `uq_typzustand_val` (`typ_id`,`tzst_val`),
+  KEY `FKtypzustand993740` (`typ_id`),
+  CONSTRAINT `FKtypzustand993740` FOREIGN KEY (`typ_id`) REFERENCES `typ` (`typ_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `variable`
+--
+
+DROP TABLE IF EXISTS `variable`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `variable` (
+  `var_id` int(11) NOT NULL AUTO_INCREMENT,
+  `var_name` tinytext NOT NULL,
+  `var_descr` text,
+  `var_exprParam` tinytext NOT NULL,
+  `typ_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`var_id`),
+  KEY `FKvariable880404` (`typ_id`),
+  CONSTRAINT `FKvariable880404` FOREIGN KEY (`typ_id`) REFERENCES `typ` (`typ_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -248,7 +272,7 @@ BEGIN
 call Anmeldungloeschen(did,sid);
 INSERT INTO `sportfest`.`anmeldung`
 (`DisziplinID`,
-`SchülerID`)
+`SchuelerID`)
 VALUES
 (did,
 sid);
@@ -313,7 +337,7 @@ did int,
 sid int
 )
 BEGIN
-delete from anmeldung where disziplinid=did and schülerid=sid;
+delete from anmeldung where disziplinid=did and schuelerid=sid;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -466,170 +490,6 @@ DELIMITER ;;
 CREATE DEFINER=`fs151`@`%` PROCEDURE `BerechtigungAnzeigen`(in name varchar(100), in passwort varchar(255))
 BEGIN
 	SELECT BerechtigungsID FROM Benutzer b WHERE name = b.Name AND passwort = b.Passwort;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `BewertungseinheitAendern` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `BewertungseinheitAendern`(bid int, inName varchar(255))
-BEGIN
-	update bewertungseinheit set Name = inName where BewertungseinheitID=bid;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `BewertungseinheitAnlegen` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `BewertungseinheitAnlegen`(inName varchar(255))
-BEGIN
-	insert into bewertungseinheit(Name)
-    values(inName);
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `BewertungseinheitAnzeigen` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `BewertungseinheitAnzeigen`(in bid int)
-BEGIN
-	SELECT * FROM bewertungseinheit where BewertungseinheitID = bid;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `BewertungseinheitenAnzeigen` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `BewertungseinheitenAnzeigen`()
-BEGIN
-	SELECT * FROM bewertungseinheit;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `BewertungseinheitLoeschen` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `BewertungseinheitLoeschen`(bid int)
-BEGIN
-	delete from bewertungseinheit where BewertungseinheitID = bid;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `datenbankZuruecksetzen` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `datenbankZuruecksetzen`()
-BEGIN
-	SET foreign_key_checks = 0;
-    drop table if exists Regel;
-	drop table if exists Anmeldung;
-	drop table if exists Klasse;
-	drop table if exists Schüler;
-	drop table if exists Ergebnis;
-	drop table if exists Bewertungseinheit;
-	drop table if exists Zustand;
-	drop table if exists Geschlecht;    
-	drop table if exists Leistungsergebnis;
-	drop table if exists Disziplin;
-	drop table if exists Leistung;
-    SET foreign_key_checks = 1;
-
-	create table Leistung (LeistungID int(11) not null auto_increment, DisziplinID int(11) not null, ErgebnisID int(11) not null, KlassenID int(11) not null, SchülerID int(11) not null, Zeitpunkt timestamp null, primary key (LeistungID));
-	create table Disziplin (DisziplinID int(11) not null auto_increment, Name varchar(100), Beschreibung varchar(2048), MindestAnzahl int(3), MaximalAnzahl int(3), aktiviert int(1), teamleistung int(1), primary key (DisziplinID));
-	create table Leistungsergebnis (ErgebnisID int(11) not null, LeistungID int(11) not null, Wert int(11), primary key (ErgebnisID, LeistungID));
-	create table Geschlecht (GeschlechtsID int(11) not null auto_increment, Name varchar(25), primary key (GeschlechtsID));
-	create table Zustand (ZustandsID int(11) not null auto_increment, Name varchar(100), primary key (ZustandsID));
-	create table Bewertungseinheit (BewertungseinheitID int(11) not null auto_increment, Name varchar(100), primary key (BewertungseinheitID));
-	create table Ergebnis (ErgebnisID int(11) not null auto_increment, DisziplinID int(11) not null, Name varchar(100), Beschreibung varchar(2048), Variablenname varchar(100), BewertungseinheitID int(11) not null, primary key (ErgebnisID));
-	create table Schüler (SchülerID int(11) not null auto_increment, Vorname varchar(50), Nachname varchar(50), KlassenID int(11) not null, GeschlechtsID int(11) not null, primary key (SchülerID));
-	create table Klasse (KlassenID int(11) not null auto_increment, Name varchar(10), primary key (KlassenID));
-	create table Anmeldung (DisziplinID int(11) not null, SchülerID int(11) not null);
-	CREATE TABLE Regel (RegelID int(11) NOT NULL AUTO_INCREMENT, expr varchar(2048), DisziplinID int(11) NOT NULL, PRIMARY KEY (RegelID));
-    
-    alter table Leistung add index FKLeistung447192 (DisziplinID), add constraint FKLeistung447192 foreign key (DisziplinID) references Disziplin (DisziplinID);
-	alter table Ergebnis add index FKErgebnis303121 (DisziplinID), add constraint FKErgebnis303121 foreign key (DisziplinID) references Disziplin (DisziplinID);
-	alter table Leistungsergebnis add index FKLeistungse932193 (LeistungID), add constraint FKLeistungse932193 foreign key (LeistungID) references Leistung (LeistungID);
-	alter table Leistungsergebnis add index FKLeistungse201545 (ErgebnisID), add constraint FKLeistungse201545 foreign key (ErgebnisID) references Ergebnis (ErgebnisID);
-	alter table Schüler add index FKSchüler920130 (GeschlechtsID), add constraint FKSchüler920130 foreign key (GeschlechtsID) references Geschlecht (GeschlechtsID);
-	alter table Schüler add index FKSchüler614103 (KlassenID), add constraint FKSchüler614103 foreign key (KlassenID) references Klasse (KlassenID);
-	alter table Anmeldung add index FKAnmeldung256515 (DisziplinID), add constraint FKAnmeldung256515 foreign key (DisziplinID) references Disziplin (DisziplinID);
-	alter table Anmeldung add index FKAnmeldung976756 (SchülerID), add constraint FKAnmeldung976756 foreign key (SchülerID) references Schüler (SchülerID);
-	alter table Leistung add index FKLeistung43106 (KlassenID), add constraint FKLeistung43106 foreign key (KlassenID) references Klasse (KlassenID);
-	alter table Leistung add index FKLeistung786079 (SchülerID), add constraint FKLeistung786079 foreign key (SchülerID) references Schüler (SchülerID);
-	alter table Ergebnis add index FKErgebnis76351 (BewertungseinheitID), add constraint FKErgebnis76351 foreign key (BewertungseinheitID) references Bewertungseinheit (BewertungseinheitID);
-
-	INSERT INTO Geschlecht VALUES (1, 'männlich');
-	INSERT INTO Geschlecht VALUES (2, 'weiblich');
-	INSERT INTO Geschlecht VALUES (3, 'beides');
-
-	INSERT INTO Zustand VALUES(1, 'Gewonnen');
-	INSERT INTO Zustand VALUES(2, 'Verloren');
-	INSERT INTO Zustand VALUES(3, 'Teilgenommen');
-	INSERT INTO Zustand VALUES(4, 'Unentschieden');
-
-	INSERT INTO Bewertungseinheit VALUES(1, 'cm');
-	INSERT INTO Bewertungseinheit VALUES(2, 'Sek.');
-	INSERT INTO Bewertungseinheit VALUES(3, 'Anz.');
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -847,7 +707,7 @@ BEGIN
 	
 	INSERT INTO `sportfest`.`disziplin`(`Name`,`Beschreibung`,`MindestAnzahl`,`MaximalAnzahl`,`aktiviert`,`teamleistung`,`KontrahentenAnzahl`)
     VALUES
-		("Medizinball – Weitwurf",
+		("Medizinball  Weitwurf",
 		"5  Werfer pro Klasse sind möglich Ab dem Markierungsband wird gemessen ! Leichtes Übertreten (Bandbrührung) wird geduldet. ( Wir sind keine Profis! ) Der erste Aufprall zählt. 3  Wertungsversuche  -  der beste gilt",
 		1,
 		5,
@@ -903,121 +763,6 @@ DELIMITER ;;
 CREATE DEFINER=`fs151`@`%` PROCEDURE `DisziplinLoeschen`(did int)
 BEGIN
 	delete from disziplin where DisziplinID= did;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `ErgebnisAendern` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `ErgebnisAendern`(
-ineid int,
-indid int,
-inname varchar(255),
-inbeschreibung  varchar(255),
-invariablenname  varchar(255),
-bid int
-)
-BEGIN	
-	update ergebnis set name =inname,beschreibung= inbeschreibung,
-    variablenname = invariablenname,
-    bewertungseinheitid= bid,
-     disziplinid= indid
-     where ergebnisid= ineid;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `ErgebnisAnlegen` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `ErgebnisAnlegen`(
-indid int,
-inname varchar(255),
-inbeschreibung  varchar(255),
-invariablenname  varchar(255),
-bid int
-)
-BEGIN	
-	insert into ergebnis (disziplinid,name,beschreibung,variablenname,bewertungseinheitid)
-    values(indid,inname,inbeschreibung,invariablenname, bid);
-    select last_insert_id();
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `ErgebnisAnzeigen` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `ErgebnisAnzeigen`(
-eid int)
-BEGIN
-select *from ergebnis where ergebnisid= eid;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `ErgebnisLoeschen` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `ErgebnisLoeschen`(eid int)
-BEGIN
-delete from ergebnis where ergebnisid= eid;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `ErgebnisseAnzeigen` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `ErgebnisseAnzeigen`()
-BEGIN
-select * from ergebnis;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1181,7 +926,7 @@ inzeitpunkt timestamp
 BEGIN
 Update leistung set 
 disziplinid= did, ergebnisid=eid
-,schülerid=sid,klassenid=kid,zeitpunkt=inzeitpunkt 
+,schuelerid=sid,klassenid=kid,zeitpunkt=inzeitpunkt 
 where leistungid= lid;
 END ;;
 DELIMITER ;
@@ -1292,107 +1037,8 @@ inzeitpunkt timestamp
 )
 BEGIN
 	
-	insert into leistung (disziplinid,ergebnisid,schülerid,klassenid,zeitpunkt) values(did,eid,sid,(select klassenid from schüler where schülerid= sid),inzeitpunkt);
+	insert into leistung (disziplinid,ergebnisid,schuelerid,klassenid,zeitpunkt) values(did,eid,sid,(select klassenid from schueler where schuelerid= sid),inzeitpunkt);
 	SELECT LAST_INSERT_ID(); 
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `LeistungsergebnisAnlegen` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `LeistungsergebnisAnlegen`(eid int, lid int, wert int)
-BEGIN
-	insert into leistungsergebnis(ErgebnisID, LeistungID, Wert)
-    values(eid, lid, wert);
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `LeistungsergebnisAnzeigen` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `LeistungsergebnisAnzeigen`(eid int, lid int)
-BEGIN
-	Select * from leistungsergebnis where ErgebnisID=eid AND LeistungID = lid;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `LeistungsergebnisBearbeiten` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `LeistungsergebnisBearbeiten`(eid int, lid int, inwert int)
-BEGIN
-	update leistungsergebnis set wert = inwert
-    where ErgebnisID=eid and LeistungID=lid;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `LeistungsergebnisLoeschen` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `LeistungsergebnisLoeschen`(
-eid int, lid int
-)
-BEGIN
-delete from leistungsergebnis where ergebnisid=eid and leistungid=lid;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `LeistungsergebnisseAnzeigen` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `LeistungsergebnisseAnzeigen`()
-BEGIN
-	Select * from leistungsergebnis;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1517,13 +1163,13 @@ CREATE DEFINER=`fs151`@`%` PROCEDURE `SchuelerAendern`(
     ingeschlechtsid int
 )
 BEGIN
-update`sportfest`.`schüler`
+update`sportfest`.`schueler`
 set Vorname= invorname,
 Nachname=innachname,
 KlassenID=inklassenid,
 GeschlechtsID=ingeschlechtsid
 where 
-schülerid= insid;
+schuelerid= insid;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1548,7 +1194,7 @@ CREATE DEFINER=`fs151`@`%` PROCEDURE `SchuelerAnlegen`(
     ingeschlechtsid int
 )
 BEGIN
-	INSERT INTO `sportfest`.`schüler`
+	INSERT INTO `sportfest`.`schueler`
 	(
 	`Vorname`,
 	`Nachname`,
@@ -1578,7 +1224,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`fs151`@`%` PROCEDURE `SchuelerAnzeigen`(sid int)
 BEGIN
-		select * from schüler where schülerid= sid;
+		select * from schueler where schuelerid= sid;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1598,8 +1244,8 @@ DELIMITER ;;
 CREATE DEFINER=`fs151`@`%` PROCEDURE `SchuelerEinerDisziplinUndKlasseAnzeigen`(kid int, did int)
 BEGIN
 
-SELECT * FROM schüler s, leistung l
-WHERE l.KlassenID = kid AND l. disziplinID = did  AND s.SchülerID = l.SchülerID;
+SELECT * FROM schueler s, leistung l
+WHERE l.KlassenID = kid AND l. disziplinID = did  AND s.SchuelerID = l.SchuelerID;
 
 END ;;
 DELIMITER ;
@@ -1619,7 +1265,41 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`fs151`@`%` PROCEDURE `SchuelerEinerKlasseAnzeigen`(kid int)
 BEGIN
- SELECT * FROM schüler s WHERE s.KlassenID = kid;
+ SELECT * FROM schueler s WHERE s.KlassenID = kid;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `schuelerKlasseLeeren` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`fs151`@`%` PROCEDURE `schuelerKlasseLeeren`()
+BEGIN
+
+	SET foreign_key_checks = 0;
+	drop table if exists Anmeldung;
+	drop table if exists Klasse;
+	drop table if exists Schueler;
+	SET foreign_key_checks = 1;
+    
+    create table Schueler (SchuelerID int(11) not null auto_increment, Vorname varchar(50), Nachname varchar(50), KlassenID int(11) not null, GeschlechtsID int(11) not null, primary key (SchuelerID));
+	create table Klasse (KlassenID int(11) not null auto_increment, Name varchar(10), primary key (KlassenID));
+	create table Anmeldung (DisziplinID int(11) not null, SchuelerID int(11) not null);
+	
+    alter table Schueler add index FKSchueler920130 (GeschlechtsID), add constraint FKSchueler920130 foreign key (GeschlechtsID) references Geschlecht (GeschlechtsID);
+	alter table Schueler add index FKSchueler614103 (KlassenID), add constraint FKSchueler614103 foreign key (KlassenID) references Klasse (KlassenID);
+	alter table Anmeldung add index FKAnmeldung256515 (DisziplinID), add constraint FKAnmeldung256515 foreign key (DisziplinID) references Disziplin (DisziplinID);
+	alter table Anmeldung add index FKAnmeldung976756 (SchuelerID), add constraint FKAnmeldung976756 foreign key (SchuelerID) references Schueler (SchuelerID);
+	
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1638,7 +1318,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`fs151`@`%` PROCEDURE `SchuelerLoeschen`(sid int)
 BEGIN
-	delete from schüler where schülerid = sid;
+	delete from schueler where schuelerid = sid;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1657,14 +1337,14 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`fs151`@`%` PROCEDURE `SchuelerPAnzeigen`()
 BEGIN
-		select * from schüler;
+		select * from schueler;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `schülerKlasseLeeren` */;
+/*!50003 DROP PROCEDURE IF EXISTS `TypAnzeigen` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -1674,31 +1354,19 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `schülerKlasseLeeren`()
+CREATE DEFINER=`fs151`@`%` PROCEDURE `TypAnzeigen`(
+    tid int)
 BEGIN
 
-	SET foreign_key_checks = 0;
-	drop table if exists Anmeldung;
-	drop table if exists Klasse;
-	drop table if exists Schüler;
-	SET foreign_key_checks = 1;
-    
-    create table Schüler (SchülerID int(11) not null auto_increment, Vorname varchar(50), Nachname varchar(50), KlassenID int(11) not null, GeschlechtsID int(11) not null, primary key (SchülerID));
-	create table Klasse (KlassenID int(11) not null auto_increment, Name varchar(10), primary key (KlassenID));
-	create table Anmeldung (DisziplinID int(11) not null, SchülerID int(11) not null);
-	
-    alter table Schüler add index FKSchüler920130 (GeschlechtsID), add constraint FKSchüler920130 foreign key (GeschlechtsID) references Geschlecht (GeschlechtsID);
-	alter table Schüler add index FKSchüler614103 (KlassenID), add constraint FKSchüler614103 foreign key (KlassenID) references Klasse (KlassenID);
-	alter table Anmeldung add index FKAnmeldung256515 (DisziplinID), add constraint FKAnmeldung256515 foreign key (DisziplinID) references Disziplin (DisziplinID);
-	alter table Anmeldung add index FKAnmeldung976756 (SchülerID), add constraint FKAnmeldung976756 foreign key (SchülerID) references Schüler (SchülerID);
-	
+    SELECT * FROM typ where typ_id = tid;
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `ZustaendeAnzeigen` */;
+/*!50003 DROP PROCEDURE IF EXISTS `VariablenAnzeigen` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -1708,16 +1376,18 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `ZustaendeAnzeigen`()
+CREATE DEFINER=`fs151`@`%` PROCEDURE `VariablenAnzeigen`()
 BEGIN
-select * from zustand;
+
+    SELECT * FROM variable;
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `Zustandanlegen` */;
+/*!50003 DROP PROCEDURE IF EXISTS `VariablenEinerDisziplinAnzeigen` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -1727,17 +1397,19 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `Zustandanlegen`(inname varchar(255))
+CREATE DEFINER=`fs151`@`%` PROCEDURE `VariablenEinerDisziplinAnzeigen`(
+    did int)
 BEGIN
-	insert into zustand (name) values(inname);
-    
+
+    SELECT v.* FROM disziplin_variable JOIN variable v USING (var_id) WHERE disz_id = did;
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `zustandanzeigen` */;
+/*!50003 DROP PROCEDURE IF EXISTS `ZustaendeEinesTypsAnzeigen` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -1747,28 +1419,12 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `zustandanzeigen`(zid int)
+CREATE DEFINER=`fs151`@`%` PROCEDURE `ZustaendeEinesTypsAnzeigen`(
+    tid int)
 BEGIN
-	select * from zustand where zustandsid= zid;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `Zustandloeschen` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `Zustandloeschen`(zid int)
-BEGIN
-delete from zustand where zustandsid=zid;
+
+    SELECT * FROM typzustand where typ_id = tid;
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1785,4 +1441,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-27 14:52:21
+-- Dump completed on 2017-06-28 13:36:36
