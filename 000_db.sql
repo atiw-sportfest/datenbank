@@ -169,7 +169,7 @@ CREATE TABLE `regel` (
   `idx` int(11) DEFAULT NULL,
   `points` int(11) DEFAULT NULL,
   PRIMARY KEY (`RegelID`),
-  UNIQUE KEY `regel` (`idx`),
+  UNIQUE KEY `regel` (`DisziplinID`,`idx`),
   KEY `FKregel50152` (`DisziplinID`),
   CONSTRAINT `FKregel50152` FOREIGN KEY (`DisziplinID`) REFERENCES `disziplin` (`DisziplinID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -489,7 +489,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`fs151`@`%` PROCEDURE `BerechtigungAnzeigen`(in name varchar(100), in passwort varchar(255))
 BEGIN
-	SELECT BerechtigungsID FROM Benutzer b WHERE name = b.Name AND passwort = b.Passwort;
+	SELECT BerechtigungsID FROM benutzer b WHERE name = b.Name AND passwort = b.Passwort;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1056,12 +1056,13 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`fs151`@`%` PROCEDURE `Regelanlegen`(
-    inexpr varchar(255),
     indid int,
     inidx int
+    inexpr varchar(255),
+    inpoints int
 )
 BEGIN
-	insert into regel (expr,DisziplinID,idx) values (inexpr,indid,inidx);
+	insert into regel (expr,DisziplinID,idx,points) values (inexpr,indid,inidx,points);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
