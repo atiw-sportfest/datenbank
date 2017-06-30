@@ -17,4 +17,4 @@ INSERT IGNORE INTO disziplin (disziplinid,name,beschreibung,mindestanzahl,maxima
 INSERT IGNORE INTO variable (var_id,var_name,var_descr,var_exprParam,typ_id) VALUES (2000,"Weite", "Weite in cm", "w", @t_int), (2001,"Sternzeichen", "Das Sternzeichen des Teilnehmers", "stz", @t_stz);
 INSERT IGNORE INTO disziplin_variable (var_id,disz_id) VALUES (2000,@d_wts), (2000,@d_elt), (2001,@d_elt);
 
-INSERT INTO benutzer (name,passwort,berechtigungsid) VALUES ("test",md5("test"),1);
+INSERT IGNORE INTO benutzer (name,passwort,berechtigungsid) VALUES ("test",md5("test"),1);

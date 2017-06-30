@@ -489,7 +489,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`fs151`@`%` PROCEDURE `BerechtigungAnzeigen`(in name varchar(100), in passwort varchar(255))
 BEGIN
-	SELECT BerechtigungsID FROM Benutzer b WHERE name = b.Name AND passwort = b.Passwort;
+	SELECT BerechtigungsID FROM benutzer b WHERE name = b.Name AND passwort = b.Passwort;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
