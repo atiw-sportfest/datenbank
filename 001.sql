@@ -18,6 +18,8 @@ CREATE TABLE `regel` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+ALTER TABLE typ ADD (typ_conv TINYTEXT);
+
 DROP PROCEDURE IF EXISTS BerechtigungAnzeigen;
 
 DELIMITER ;;
@@ -27,6 +29,15 @@ CREATE PROCEDURE BerechtigungAnzeigen (
 )
 BEGIN
 	SELECT BerechtigungsID FROM benutzer b WHERE name = b.Name AND passwort = b.Passwort;
+END ;;
+
+DROP PROCEDURE IF EXISTS RegelnEinerDisziplinAnzeigen;
+
+CREATE PROCEDURE RegelnEinerDisziplinAnzeigen (
+    in_did int
+)
+BEGIN
+    SELECT * FROM regel WHERE DisziplinID = in_did ORDER BY idx DESC;
 END ;;
 
 DELIMITER ;
