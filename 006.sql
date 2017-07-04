@@ -15,10 +15,11 @@ CREATE PROCEDURE LeistungAnlegen (
     in_disz_id int,
     in_k_id int,
     in_s_id int,
-    in_tstp timestamp
+    in_tstp timestamp,
+    in_vs int
 )
 BEGIN
-    INSERT INTO leistung (disziplinid, klassenid, schuelerid, zeitpunkt) VALUES (in_disz_id, in_k_id, in_s_id, in_tstp);
+    INSERT INTO leistung (disziplinid, klassenid, schuelerid, zeitpunkt, versus) VALUES (in_disz_id, in_k_id, in_s_id, in_tstp, in_vs);
     SELECT * FROM leistung WHERE leistungid = LAST_INSERT_ID();
 END ;;
 
