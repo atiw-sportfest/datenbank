@@ -64,7 +64,7 @@ CREATE TABLE `disziplin` (
   `teamleistung` int(1) DEFAULT NULL,
   `KontrahentenAnzahl` int(11) DEFAULT NULL,
   PRIMARY KEY (`DisziplinID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -115,7 +115,7 @@ CREATE TABLE `geschlecht` (
   `GeschlechtsID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`GeschlechtsID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,7 +129,7 @@ CREATE TABLE `klasse` (
   `KlassenID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`KlassenID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -152,7 +152,7 @@ CREATE TABLE `leistung` (
   CONSTRAINT `FKleistung532661` FOREIGN KEY (`KlassenID`) REFERENCES `klasse` (`KlassenID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FKleistung632099` FOREIGN KEY (`SchuelerID`) REFERENCES `schueler` (`SchuelerID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FKleistung910233` FOREIGN KEY (`DisziplinID`) REFERENCES `disziplin` (`DisziplinID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -172,7 +172,7 @@ CREATE TABLE `regel` (
   UNIQUE KEY `regel` (`idx`),
   KEY `FKregel50152` (`DisziplinID`),
   CONSTRAINT `FKregel50152` FOREIGN KEY (`DisziplinID`) REFERENCES `disziplin` (`DisziplinID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -193,7 +193,7 @@ CREATE TABLE `schueler` (
   KEY `FKschueler10993` (`GeschlechtsID`),
   CONSTRAINT `FKschueler10993` FOREIGN KEY (`GeschlechtsID`) REFERENCES `geschlecht` (`GeschlechtsID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FKschueler944621` FOREIGN KEY (`KlassenID`) REFERENCES `klasse` (`KlassenID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -209,7 +209,7 @@ CREATE TABLE `typ` (
   `typ_descr` text,
   `typ_typ` tinytext NOT NULL,
   PRIMARY KEY (`typ_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -229,7 +229,7 @@ CREATE TABLE `typzustand` (
   UNIQUE KEY `uq_typzustand_val` (`typ_id`,`tzst_val`),
   KEY `FKtypzustand993740` (`typ_id`),
   CONSTRAINT `FKtypzustand993740` FOREIGN KEY (`typ_id`) REFERENCES `typ` (`typ_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -248,7 +248,7 @@ CREATE TABLE `variable` (
   PRIMARY KEY (`var_id`),
   KEY `FKvariable880404` (`typ_id`),
   CONSTRAINT `FKvariable880404` FOREIGN KEY (`typ_id`) REFERENCES `typ` (`typ_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
