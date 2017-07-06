@@ -68,24 +68,6 @@ CREATE TABLE `disziplin` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `disziplin_variable`
---
-
-DROP TABLE IF EXISTS `disziplin_variable`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `disziplin_variable` (
-  `var_id` int(11) NOT NULL,
-  `disz_id` int(11) NOT NULL,
-  PRIMARY KEY (`var_id`,`disz_id`),
-  KEY `FKdisziplin_56510` (`var_id`),
-  KEY `FKdisziplin_395990` (`disz_id`),
-  CONSTRAINT `FKdisziplin_395990` FOREIGN KEY (`disz_id`) REFERENCES `disziplin` (`DisziplinID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FKdisziplin_56510` FOREIGN KEY (`var_id`) REFERENCES `variable` (`var_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `ergebnis`
 --
 
