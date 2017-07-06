@@ -264,7 +264,7 @@ CREATE TABLE `variable` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `AnmeldungAnlegen`(
+CREATE PROCEDURE `AnmeldungAnlegen`(
 sid int,
 did int
 )
@@ -292,7 +292,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `AnmeldungenAnzeigen`()
+CREATE PROCEDURE `AnmeldungenAnzeigen`()
 BEGIN
 Select* from Anmeldung;
 
@@ -312,7 +312,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `AnmeldungenEinerDisziplinAnzeigen`(
+CREATE PROCEDURE `AnmeldungenEinerDisziplinAnzeigen`(
 did int)
 BEGIN
 select * from anmeldung where disziplinid=did;
@@ -332,7 +332,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `AnmeldungLoeschen`(
+CREATE PROCEDURE `AnmeldungLoeschen`(
 did int,
 sid int
 )
@@ -354,7 +354,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `BenutzerAendern`(
+CREATE PROCEDURE `BenutzerAendern`(
 inname varchar(255),
 inpasswort varchar(255),
 inBerechtigungID int
@@ -379,7 +379,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `BenutzerAnlegen`(
+CREATE PROCEDURE `BenutzerAnlegen`(
 inname varchar(255),
 inpasswort varchar(255),
 inBerechtigungID int
@@ -403,7 +403,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `BenutzerAnzeigen`()
+CREATE PROCEDURE `BenutzerAnzeigen`()
 BEGIN
 select * from benutzer;
 END ;;
@@ -422,7 +422,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `BenutzerDatenExistieren`(
+CREATE PROCEDURE `BenutzerDatenExistieren`(
 inname varchar(255),
 inpasswort varchar(255))
 BEGIN
@@ -443,7 +443,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `BenutzerLoeschen`(
+CREATE PROCEDURE `BenutzerLoeschen`(
 delname varchar(255))
 BEGIN
 delete from benutzer where name=delname;
@@ -463,7 +463,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `BenutzerPasswortAendern`(
+CREATE PROCEDURE `BenutzerPasswortAendern`(
 inname varchar(255),
 inpasswort varchar(255)
 )
@@ -487,7 +487,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `BerechtigungAnzeigen`(in name varchar(100), in passwort varchar(255))
+CREATE PROCEDURE `BerechtigungAnzeigen`(in name varchar(100), in passwort varchar(255))
 BEGIN
 	SELECT BerechtigungsID FROM benutzer b WHERE name = b.Name AND passwort = b.Passwort;
 END ;;
@@ -506,7 +506,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `DisziplinAendern`(
+CREATE PROCEDURE `DisziplinAendern`(
 did int,
 inName varchar(255),
  inBeschreibung varchar(255),
@@ -535,7 +535,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `DisziplinAnlegen`( inName varchar(255),
+CREATE PROCEDURE `DisziplinAnlegen`( inName varchar(255),
  inBeschreibung varchar(255),
  inminTeilnehmer int,
  inmaxTeilnehmer int,
@@ -563,7 +563,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `DisziplinAnzeigen`(
+CREATE PROCEDURE `DisziplinAnzeigen`(
 in id int)
 BEGIN
 Select * from disziplin where disziplinid=id;
@@ -583,7 +583,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `DisziplinAnzeigen2`(
+CREATE PROCEDURE `DisziplinAnzeigen2`(
 in id int)
 BEGIN
 Select * from disziplin where disziplinid=id;
@@ -603,7 +603,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `DisziplinBearbeiten`(
+CREATE PROCEDURE `DisziplinBearbeiten`(
 did int,
 inName varchar(255),
  inBeschreibung varchar(255),
@@ -632,7 +632,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `Disziplinen2017`()
+CREATE PROCEDURE `Disziplinen2017`()
 BEGIN
 
 	INSERT INTO `sportfest`.`disziplin`(`Name`,`Beschreibung`,`MindestAnzahl`,`MaximalAnzahl`,`aktiviert`,`teamleistung`,`KontrahentenAnzahl`)
@@ -770,7 +770,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `DisziplinenAnzeigen`()
+CREATE PROCEDURE `DisziplinenAnzeigen`()
 BEGIN
 	SELECT * FROM disziplin;
 END ;;
@@ -789,7 +789,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `DisziplinLoeschen`(did int)
+CREATE PROCEDURE `DisziplinLoeschen`(did int)
 BEGIN
 	delete from disziplin where DisziplinID= did;
 END ;;
@@ -808,7 +808,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `GeschlechtAnzeigen`(in gid int)
+CREATE PROCEDURE `GeschlechtAnzeigen`(in gid int)
 BEGIN
 	SELECT * FROM geschlecht where GeschlechtsID = gid;
 END ;;
@@ -827,7 +827,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `GeschlechterAnzeigen`()
+CREATE PROCEDURE `GeschlechterAnzeigen`()
 BEGIN
 	SELECT * FROM geschlecht;
 END ;;
@@ -846,7 +846,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `KlasseAnlegen`(
+CREATE PROCEDURE `KlasseAnlegen`(
 inname varchar(255))
 BEGIN
 		insert into  klasse (name) values (inname);
@@ -867,7 +867,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `Klasseanzeigen`(kid int)
+CREATE PROCEDURE `Klasseanzeigen`(kid int)
 BEGIN
 	select * from klasse where klassenID= kid;
 END ;;
@@ -886,7 +886,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `KlasseBearbeiten`(inkid int,
+CREATE PROCEDURE `KlasseBearbeiten`(inkid int,
 inname varchar(255))
 BEGIN
 	update klasse set name= inname where klassenid=inkid;
@@ -906,7 +906,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `Klasseloeschen`(kid int)
+CREATE PROCEDURE `Klasseloeschen`(kid int)
 BEGIN
 	delete from klasse where klassenid=kid;
 END ;;
@@ -925,7 +925,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `KlassenAnzeigen`()
+CREATE PROCEDURE `KlassenAnzeigen`()
 BEGIN
 	select * from klasse order by Name;
 END ;;
@@ -944,7 +944,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `LeistungAendern`(
+CREATE PROCEDURE `LeistungAendern`(
 lid int,
 did int,
 kid int,
@@ -972,7 +972,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `LeistungAnzeigen`(lid int)
+CREATE PROCEDURE `LeistungAnzeigen`(lid int)
 BEGIN
 select * from leistung where leistungid =lid;
 END ;;
@@ -991,7 +991,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `LeistungenAnzeigen`()
+CREATE PROCEDURE `LeistungenAnzeigen`()
 BEGIN
 select * from Leistung;
 END ;;
@@ -1010,7 +1010,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `LeistungKlasseAnlegen`(
+CREATE PROCEDURE `LeistungKlasseAnlegen`(
 did int,
 kid int,
 inzeitpunkt timestamp
@@ -1035,7 +1035,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `LeistungLoeschen`(
+CREATE PROCEDURE `LeistungLoeschen`(
 lid int)
 BEGIN
 delete from leistungsergebnis where  leistungid=lid;
@@ -1056,7 +1056,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `LeistungSchuelerAnlegen`(
+CREATE PROCEDURE `LeistungSchuelerAnlegen`(
 did int,
 sid int,
 inzeitpunkt timestamp
@@ -1081,7 +1081,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `RegelAnlegen`(
+CREATE PROCEDURE `RegelAnlegen`(
     disz_id int,
     expr text,
     idx int,
@@ -1106,7 +1106,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `RegelAnzeigen`(
+CREATE PROCEDURE `RegelAnzeigen`(
     in_r_id int
 )
 BEGIN
@@ -1127,7 +1127,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `RegelBearbeiten`(
+CREATE PROCEDURE `RegelBearbeiten`(
     in_rid int,
     in_expr text,
     in_idx int,
@@ -1151,7 +1151,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `RegelLoeschen`(rid int)
+CREATE PROCEDURE `RegelLoeschen`(rid int)
 BEGIN
 	delete from regel where regelid=rid;
 END ;;
@@ -1170,7 +1170,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `RegelnEinerDisziplinAnzeigen`(did int)
+CREATE PROCEDURE `RegelnEinerDisziplinAnzeigen`(did int)
 BEGIN
 select * from regel where disziplinid=did order by idx;
 
@@ -1190,7 +1190,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `SchuelerAendern`(
+CREATE PROCEDURE `SchuelerAendern`(
 	insid int,
     invorname varchar(255),
     innachname varchar(255),
@@ -1221,7 +1221,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `SchuelerAnlegen`(
+CREATE PROCEDURE `SchuelerAnlegen`(
 	
 	invorname varchar(255),
     innachname varchar(255),
@@ -1257,7 +1257,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `SchuelerAnzeigen`(sid int)
+CREATE PROCEDURE `SchuelerAnzeigen`(sid int)
 BEGIN
 		select * from schueler where schuelerid= sid;
 END ;;
@@ -1276,7 +1276,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `SchuelerEinerDisziplinUndKlasseAnzeigen`(kid int, did int)
+CREATE PROCEDURE `SchuelerEinerDisziplinUndKlasseAnzeigen`(kid int, did int)
 BEGIN
 
 SELECT * FROM schueler s, leistung l
@@ -1298,7 +1298,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `SchuelerEinerKlasseAnzeigen`(kid int)
+CREATE PROCEDURE `SchuelerEinerKlasseAnzeigen`(kid int)
 BEGIN
  SELECT * FROM schueler s WHERE s.KlassenID = kid;
 END ;;
@@ -1317,7 +1317,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `schuelerKlasseLeeren`()
+CREATE PROCEDURE `schuelerKlasseLeeren`()
 BEGIN
 
 	SET foreign_key_checks = 0;
@@ -1351,7 +1351,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `SchuelerLoeschen`(sid int)
+CREATE PROCEDURE `SchuelerLoeschen`(sid int)
 BEGIN
 	delete from schueler where schuelerid = sid;
 END ;;
@@ -1370,7 +1370,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `SchuelerPAnzeigen`()
+CREATE PROCEDURE `SchuelerPAnzeigen`()
 BEGIN
 		select * from schueler;
 END ;;
@@ -1389,7 +1389,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `TypAnlegen`(
+CREATE PROCEDURE `TypAnlegen`(
     typ_name tinytext,
     typ_descr text,
     typ_typ tinytext
@@ -1413,7 +1413,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `TypAnzeigen`(
+CREATE PROCEDURE `TypAnzeigen`(
     in_typ_id int
 )
 BEGIN
@@ -1434,7 +1434,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `TypBearbeiten`(
+CREATE PROCEDURE `TypBearbeiten`(
     in_typ_id int,
     in_typ_name tinytext,
     in_typ_descr text,
@@ -1459,7 +1459,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `TypenAnzeigen`()
+CREATE PROCEDURE `TypenAnzeigen`()
 BEGIN
     SELECT * FROM typ;
 END ;;
@@ -1478,7 +1478,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `TypEntfernen`(
+CREATE PROCEDURE `TypEntfernen`(
     in_typ_id int
 )
 BEGIN
@@ -1500,7 +1500,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `VariableAnlegen`(
+CREATE PROCEDURE `VariableAnlegen`(
     var_name tinytext,
     var_descr text,
     var_exprParam tinytext,
@@ -1525,7 +1525,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `VariableAnzeigen`(
+CREATE PROCEDURE `VariableAnzeigen`(
     in_var_id int
 )
 BEGIN
@@ -1546,7 +1546,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `VariableBearbeiten`(
+CREATE PROCEDURE `VariableBearbeiten`(
     in_var_id int,
     in_var_name tinytext,
     in_var_descr text,
@@ -1572,7 +1572,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `VariableEntfernen`(
+CREATE PROCEDURE `VariableEntfernen`(
     in_var_id int
 )
 BEGIN
@@ -1593,7 +1593,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `VariablenAnzeigen`()
+CREATE PROCEDURE `VariablenAnzeigen`()
 BEGIN
 
     SELECT * FROM variable;
@@ -1614,7 +1614,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `VariablenEinerDisziplinAnzeigen`(
+CREATE PROCEDURE `VariablenEinerDisziplinAnzeigen`(
     did int)
 BEGIN
 
@@ -1636,7 +1636,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `ZustaendeEinesTypsAnzeigen`(
+CREATE PROCEDURE `ZustaendeEinesTypsAnzeigen`(
     tid int)
 BEGIN
 
@@ -1658,7 +1658,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `ZustandAnlegen`(
+CREATE PROCEDURE `ZustandAnlegen`(
     typ_id int,
     tzst_name tinytext,
     tzst_descr text,
@@ -1683,7 +1683,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `ZustandAnzeigen`(
+CREATE PROCEDURE `ZustandAnzeigen`(
     in_z_id int
 )
 BEGIN
@@ -1704,7 +1704,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `ZustandBearbeiten`(
+CREATE PROCEDURE `ZustandBearbeiten`(
     in_z_id int,
     in_tzst_name tinytext,
     in_tzst_descr text,
@@ -1729,7 +1729,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`fs151`@`%` PROCEDURE `ZustandEntfernen`(
+CREATE PROCEDURE `ZustandEntfernen`(
     in_z_id int
 )
 BEGIN
