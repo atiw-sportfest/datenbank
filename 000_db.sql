@@ -1752,21 +1752,7 @@ DELIMITER ;
 
 -- Dump completed on 2017-06-29  8:52:00
 
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `LeistungenEinerDisziplinAnzeigen`(in_d_id int)
-BEGIN
-    SELECT * FROM leistung WHERE DisziplinID = in_d_id;
-END ;;
 
-CREATE DEFINER=`fs151`@`%` PROCEDURE `KlassenAnzeigenMitAnmeldung`(did int)
-BEGIN
-	select distinct k.* from anmeldung a, schueler s, klasse k where a.DisziplinID = did and a.SchuelerID = s.SchuelerID and s.KlassenID = k.KlassenID order by Name;
-END ;;
-
-CREATE DEFINER=`fs151`@`%` PROCEDURE `KlassenAnzeigenMitLeistungAnDisziplin`(did int)
-BEGIN
-	select distinct k.* from leistung l, klasse k where l.DisziplinID = did and l.KlassenID = k.KlassenID order by Name;
-END ;;
 
 INSERT INTO `sportfest`.`benutzer`
 (`Name`,
