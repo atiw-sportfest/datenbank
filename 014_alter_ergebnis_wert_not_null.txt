@@ -1,2 +1,0 @@
-ALTER TABLE `sportfest`.`ergebnis` 
-CHANGE COLUMN `Wert` `Wert` VARCHAR(256) NOT NULL ;
