@@ -11,4 +11,4 @@ BEGIN
     DELETE FROM ergebnis WHERE LeistungID = in_lid AND var_id = in_vid;
 END ;;
 
-DELIMITER ;;
+DELIMITER ;
