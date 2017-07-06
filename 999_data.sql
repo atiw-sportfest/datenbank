@@ -15,8 +15,9 @@ SET @t_str=101;
 SET @t_stz=102;
 SET @t_flt=103;
 
-SET @v_wte=2000;
-SET @v_stz=2001;
+SET @v_wte_wts=2000;
+SET @v_wte_elt=2001;
+SET @v_stz_elt=2002;
 
 INSERT IGNORE INTO typ (typ_id,typ_name,typ_descr,typ_typ,typ_conv) VALUES
 (@t_int, "Ganzzahl", "Einfacher Zahlewert","java.lang.Integer","parseInt"),
@@ -30,14 +31,10 @@ INSERT IGNORE INTO typzustand (typ_id,tzst_name,tzst_val) VALUES
 (@t_stz, "Wassermann", "wassermann");
 
 
-INSERT IGNORE INTO variable (var_id,var_name,var_descr,var_exprParam,typ_id) VALUES
-(@d_wte,"Weite", "Weite in cm", "weite", @t_flt),
-(@v_stz,"Sternzeichen", "Das Sternzeichen des Teilnehmers", "stz", @t_stz);
-
-INSERT IGNORE INTO disziplin_variable (var_id,disz_id) VALUES
-(@v_wte,@d_wts),
-(@v_wte,@d_elt),
-(@v_stz,@d_elt);
+INSERT IGNORE INTO variable (var_id,var_name,var_descr,var_exprParam,typ_id,disz_id,var_sortIndex) VALUES
+(@v_wte_wts,"Weite", "Gesprungene Weite in Metern", "weite", @t_flt,@d_wts,0),
+(@v_stz_elt,"Sternzeichen", "Das Sternzeichen des Teilnehmers", "stz",@t_stz,@d_elt,0),
+(@v_wte_elt,"Weite", "Geflogenen Weite in Metern", "weite", @t_flt,@d_elt,1);
 
 -- Benutzer
 
