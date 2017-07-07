@@ -83,10 +83,10 @@ INSERT IGNORE INTO leistung (LeistungID, DisziplinID, KlassenID, SchuelerID, Zei
 (1005, @did, @kid, null, now());
 
 INSERT IGNORE INTO ergebnis (LeistungID, var_id, Wert) VALUES
-(1001, @v_wte, "1.20"),
-(1001, @v_stz, "fische"),
-(1002, @v_wte, "1.10"),
-(1002, @v_stz, "wassermann"),
-(1003, @v_wte, "1.40"),
-(1003, @v_stz, "steinbock");
+(1001, @v_wte_elt, "1.20"),
+(1001, @v_stz_elt, "fische"),
+(1002, @v_wte_elt, "1.10"),
+(1002, @v_stz_elt, "wassermann"),
+(1003, @v_wte_elt, "1.40"),
+(1003, @v_stz_elt, "steinbock");
 
