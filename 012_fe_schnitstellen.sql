@@ -1,4 +1,10 @@
+
+DROP PROCEDURE IF EXISTS LeistungenEinerDisziplinAnzeigen;
+DROP PROCEDURE IF EXISTS KlassenAnzeigenMitAnmeldung;
+DROP PROCEDURE IF EXISTS KlassenAnzeigenMitLeistungAnDisziplin;
+
 DELIMITER ;;
+
 CREATE PROCEDURE `LeistungenEinerDisziplinAnzeigen`(in_d_id int)
 BEGIN
     SELECT * FROM leistung WHERE DisziplinID = in_d_id;
@@ -13,3 +19,5 @@ CREATE PROCEDURE `KlassenAnzeigenMitLeistungAnDisziplin`(did int)
 BEGIN
 	select distinct k.* from leistung l, klasse k where l.DisziplinID = did and l.KlassenID = k.KlassenID order by Name;
 END ;;
+
+DELIMITER ;
