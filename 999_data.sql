@@ -43,7 +43,7 @@ INSERT IGNORE INTO benutzer (name,passwort,berechtigungsid) VALUES
 
 -- Regeln
 
-INSERT INTO `regel` (expr,disziplinid,idx,points) VALUES
+INSERT IGNORE INTO `regel` (expr,disziplinid,idx,points) VALUES
 ('geschlecht == \"m\" && weite >= 2.4',1000,0,10),
 ('geschlecht == \"m\" && weite >= 1.2',1000,1,5),
 ('geschlecht == \"m\" && weite >= 0.6',1000,2,2),
