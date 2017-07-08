@@ -1,18 +1,4 @@
 --
--- Table structure for table `anmeldung`
---
-
-DROP TABLE IF EXISTS `anmeldung`;
-CREATE TABLE `anmeldung` (
-  `DisziplinID` int(11) NOT NULL,
-  `SchuelerID` int(11) NOT NULL,
-  KEY `FKanmeldung224868` (`DisziplinID`),
-  KEY `FKanmeldung496997` (`SchuelerID`),
-  CONSTRAINT `FKanmeldung224868` FOREIGN KEY (`DisziplinID`) REFERENCES `disziplin` (`DisziplinID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FKanmeldung496997` FOREIGN KEY (`SchuelerID`) REFERENCES `schueler` (`SchuelerID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
 -- Table structure for table `benutzer`
 --
 
@@ -22,116 +8,6 @@ CREATE TABLE `benutzer` (
   `Passwort` varchar(255) DEFAULT NULL,
   `BerechtigungsID` int(11) DEFAULT NULL,
   PRIMARY KEY (`Name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Table structure for table `disziplin`
---
-
-DROP TABLE IF EXISTS `disziplin`;
-CREATE TABLE `disziplin` (
-  `DisziplinID` int(11) NOT NULL AUTO_INCREMENT,
-  `Name` varchar(100) DEFAULT NULL,
-  `Beschreibung` varchar(2048) DEFAULT NULL,
-  `MindestAnzahl` int(3) DEFAULT NULL,
-  `MaximalAnzahl` int(3) DEFAULT NULL,
-  `aktiviert` int(1) DEFAULT NULL,
-  `teamleistung` int(1) DEFAULT NULL,
-  `KontrahentenAnzahl` int(11) DEFAULT NULL,
-  PRIMARY KEY (`DisziplinID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Table structure for table `ergebnis`
---
-
-DROP TABLE IF EXISTS `ergebnis`;
-CREATE TABLE `ergebnis` (
-  `LeistungID` int(11) NOT NULL,
-  `Wert` varchar(256) DEFAULT NULL,
-  `var_id` int(11) NOT NULL,
-  PRIMARY KEY (`LeistungID`,`var_id`),
-  KEY `FKergebnis239955` (`LeistungID`),
-  KEY `FKergebnis402622` (`var_id`),
-  CONSTRAINT `FKergebnis239955` FOREIGN KEY (`LeistungID`) REFERENCES `leistung` (`LeistungID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FKergebnis402622` FOREIGN KEY (`var_id`) REFERENCES `variable` (`var_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Table structure for table `geschlecht`
---
-
-DROP TABLE IF EXISTS `geschlecht`;
-CREATE TABLE `geschlecht` (
-  `GeschlechtsID` int(11) NOT NULL AUTO_INCREMENT,
-  `Name` varchar(25) DEFAULT NULL,
-  PRIMARY KEY (`GeschlechtsID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Table structure for table `klasse`
---
-
-DROP TABLE IF EXISTS `klasse`;
-CREATE TABLE `klasse` (
-  `KlassenID` int(11) NOT NULL AUTO_INCREMENT,
-  `Name` varchar(10) DEFAULT NULL,
-  PRIMARY KEY (`KlassenID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Table structure for table `leistung`
---
-
-DROP TABLE IF EXISTS `leistung`;
-CREATE TABLE `leistung` (
-  `LeistungID` int(11) NOT NULL AUTO_INCREMENT,
-  `DisziplinID` int(11) NOT NULL,
-  `KlassenID` int(11) NOT NULL,
-  `SchuelerID` int(11) DEFAULT NULL,
-  `Zeitpunkt` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`LeistungID`),
-  KEY `FKleistung910233` (`DisziplinID`),
-  KEY `FKleistung532661` (`KlassenID`),
-  KEY `FKleistung632099` (`SchuelerID`),
-  CONSTRAINT `FKleistung532661` FOREIGN KEY (`KlassenID`) REFERENCES `klasse` (`KlassenID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FKleistung632099` FOREIGN KEY (`SchuelerID`) REFERENCES `schueler` (`SchuelerID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FKleistung910233` FOREIGN KEY (`DisziplinID`) REFERENCES `disziplin` (`DisziplinID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Table structure for table `regel`
---
-
-DROP TABLE IF EXISTS `regel`;
-CREATE TABLE `regel` (
-  `RegelID` int(11) NOT NULL AUTO_INCREMENT,
-  `DisziplinID` int(11) NOT NULL,
-  `expr` varchar(2048) DEFAULT NULL,
-  `idx` int(11) DEFAULT NULL,
-  `points` int(11) DEFAULT NULL,
-  PRIMARY KEY (`RegelID`),
-  UNIQUE KEY `regel` (`idx`),
-  KEY `FKregel50152` (`DisziplinID`),
-  CONSTRAINT `FKregel50152` FOREIGN KEY (`DisziplinID`) REFERENCES `disziplin` (`DisziplinID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Table structure for table `schueler`
---
-
-DROP TABLE IF EXISTS `schueler`;
-CREATE TABLE `schueler` (
-  `SchuelerID` int(11) NOT NULL AUTO_INCREMENT,
-  `Vorname` varchar(50) DEFAULT NULL,
-  `Nachname` varchar(50) DEFAULT NULL,
-  `KlassenID` int(11) NOT NULL,
-  `GeschlechtsID` int(11) NOT NULL,
-  PRIMARY KEY (`SchuelerID`),
-  KEY `FKschueler944621` (`KlassenID`),
-  KEY `FKschueler10993` (`GeschlechtsID`),
-  CONSTRAINT `FKschueler10993` FOREIGN KEY (`GeschlechtsID`) REFERENCES `geschlecht` (`GeschlechtsID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FKschueler944621` FOREIGN KEY (`KlassenID`) REFERENCES `klasse` (`KlassenID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -165,9 +41,137 @@ CREATE TABLE `typzustand` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Table structure for table `variable`
+-- Table structure for table `geschlecht`
 --
 
+DROP TABLE IF EXISTS `geschlecht`;
+CREATE TABLE `geschlecht` (
+  `GeschlechtsID` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`GeschlechtsID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+--
+-- Table structure for table `klasse`
+--
+
+DROP TABLE IF EXISTS `klasse`;
+CREATE TABLE `klasse` (
+  `KlassenID` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`KlassenID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+--
+-- Table structure for table `schueler`
+--
+
+DROP TABLE IF EXISTS `schueler`;
+CREATE TABLE `schueler` (
+  `SchuelerID` int(11) NOT NULL AUTO_INCREMENT,
+  `Vorname` varchar(50) DEFAULT NULL,
+  `Nachname` varchar(50) DEFAULT NULL,
+  `KlassenID` int(11) NOT NULL,
+  `GeschlechtsID` int(11) NOT NULL,
+  PRIMARY KEY (`SchuelerID`),
+  KEY `FKschueler944621` (`KlassenID`),
+  KEY `FKschueler10993` (`GeschlechtsID`),
+  CONSTRAINT `FKschueler10993` FOREIGN KEY (`GeschlechtsID`) REFERENCES `geschlecht` (`GeschlechtsID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FKschueler944621` FOREIGN KEY (`KlassenID`) REFERENCES `klasse` (`KlassenID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `disziplin`
+--
+
+DROP TABLE IF EXISTS `disziplin`;
+CREATE TABLE `disziplin` (
+  `DisziplinID` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(100) DEFAULT NULL,
+  `Beschreibung` varchar(2048) DEFAULT NULL,
+  `MindestAnzahl` int(3) DEFAULT NULL,
+  `MaximalAnzahl` int(3) DEFAULT NULL,
+  `aktiviert` int(1) DEFAULT NULL,
+  `teamleistung` int(1) DEFAULT NULL,
+  `KontrahentenAnzahl` int(11) DEFAULT NULL,
+  PRIMARY KEY (`DisziplinID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `anmeldung`
+--
+
+DROP TABLE IF EXISTS `anmeldung`;
+CREATE TABLE `anmeldung` (
+  `DisziplinID` int(11) NOT NULL,
+  `SchuelerID` int(11) NOT NULL,
+  KEY `FKanmeldung224868` (`DisziplinID`),
+  KEY `FKanmeldung496997` (`SchuelerID`),
+  CONSTRAINT `FKanmeldung224868` FOREIGN KEY (`DisziplinID`) REFERENCES `disziplin` (`DisziplinID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FKanmeldung496997` FOREIGN KEY (`SchuelerID`) REFERENCES `schueler` (`SchuelerID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `leistung`
+--
+
+DROP TABLE IF EXISTS `leistung`;
+CREATE TABLE `leistung` (
+  `LeistungID` int(11) NOT NULL AUTO_INCREMENT,
+  `DisziplinID` int(11) NOT NULL,
+  `KlassenID` int(11) NOT NULL,
+  `SchuelerID` int(11) DEFAULT NULL,
+  `Zeitpunkt` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`LeistungID`),
+  KEY `FKleistung910233` (`DisziplinID`),
+  KEY `FKleistung532661` (`KlassenID`),
+  KEY `FKleistung632099` (`SchuelerID`),
+  CONSTRAINT `FKleistung532661` FOREIGN KEY (`KlassenID`) REFERENCES `klasse` (`KlassenID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FKleistung632099` FOREIGN KEY (`SchuelerID`) REFERENCES `schueler` (`SchuelerID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FKleistung910233` FOREIGN KEY (`DisziplinID`) REFERENCES `disziplin` (`DisziplinID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+--
+-- Table structure for table `ergebnis`
+--
+
+DROP TABLE IF EXISTS `ergebnis`;
+CREATE TABLE `ergebnis` (
+  `LeistungID` int(11) NOT NULL,
+  `Wert` varchar(256) DEFAULT NULL,
+  `var_id` int(11) NOT NULL,
+  PRIMARY KEY (`LeistungID`,`var_id`),
+  KEY `FKergebnis239955` (`LeistungID`),
+  KEY `FKergebnis402622` (`var_id`),
+  CONSTRAINT `FKergebnis239955` FOREIGN KEY (`LeistungID`) REFERENCES `leistung` (`LeistungID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FKergebnis402622` FOREIGN KEY (`var_id`) REFERENCES `variable` (`var_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+--
+-- Table structure for table `regel`
+--
+
+DROP TABLE IF EXISTS `regel`;
+CREATE TABLE `regel` (
+  `RegelID` int(11) NOT NULL AUTO_INCREMENT,
+  `DisziplinID` int(11) NOT NULL,
+  `expr` varchar(2048) DEFAULT NULL,
+  `idx` int(11) DEFAULT NULL,
+  `points` int(11) DEFAULT NULL,
+  PRIMARY KEY (`RegelID`),
+  UNIQUE KEY `regel` (`idx`),
+  KEY `FKregel50152` (`DisziplinID`),
+  CONSTRAINT `FKregel50152` FOREIGN KEY (`DisziplinID`) REFERENCES `disziplin` (`DisziplinID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+--
+-- Table structure for table `variable`
+--
 DROP TABLE IF EXISTS `variable`;
 CREATE TABLE `variable` (
   `var_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -181,7 +185,7 @@ CREATE TABLE `variable` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping routines for database 'sportfest'
+-- routines for database 'sportfest'
 --
 
 DELIMITER ;;
