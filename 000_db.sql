@@ -1,3 +1,6 @@
+
+SET FOREIGN_KEY_CHECKS=0;
+
 --
 -- Table structure for table `benutzer`
 --
@@ -184,12 +187,15 @@ CREATE TABLE `variable` (
   CONSTRAINT `FKvariable880404` FOREIGN KEY (`typ_id`) REFERENCES `typ` (`typ_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+SET FOREIGN_KEY_CHECKS=1;
 --
 -- routines for database 'sportfest'
 --
 
 DELIMITER ;;
 
+
+DROP PROCEDURE IF EXISTS `AnmeldungAnlegen`;
 CREATE PROCEDURE `AnmeldungAnlegen`(
 sid int,
 did int
@@ -203,16 +209,22 @@ VALUES
 (did,
 sid);
 END ;;
+
+DROP PROCEDURE IF EXISTS `AnmeldungenAnzeigen`;
 CREATE PROCEDURE `AnmeldungenAnzeigen`()
 BEGIN
 Select* from Anmeldung;
 
 END ;;
+
+DROP PROCEDURE IF EXISTS `AnmeldungenEinerDisziplinAnzeigen`;
 CREATE PROCEDURE `AnmeldungenEinerDisziplinAnzeigen`(
 did int)
 BEGIN
 select * from anmeldung where disziplinid=did;
 END ;;
+
+DROP PROCEDURE IF EXISTS `AnmeldungLoeschen`;
 CREATE PROCEDURE `AnmeldungLoeschen`(
 did int,
 sid int
@@ -220,6 +232,8 @@ sid int
 BEGIN
 delete from anmeldung where disziplinid=did and schuelerid=sid;
 END ;;
+
+DROP PROCEDURE IF EXISTS `BenutzerAendern`;
 CREATE PROCEDURE `BenutzerAendern`(
 inname varchar(255),
 inpasswort varchar(255),
@@ -230,6 +244,8 @@ update benutzer set
 passwort= inpasswort, berechtigungsid= inBerechtigungID where 
 name =inname;
 END ;;
+
+DROP PROCEDURE IF EXISTS `BenutzerAnlegen`;
 CREATE PROCEDURE `BenutzerAnlegen`(
 inname varchar(255),
 inpasswort varchar(255),
@@ -239,21 +255,29 @@ BEGIN
 insert into benutzer (name,passwort,berechtigungsid) values
 (inname,inpasswort,inBerechtigungID);
 END ;;
+
+DROP PROCEDURE IF EXISTS `BenutzerAnzeigen`;
 CREATE PROCEDURE `BenutzerAnzeigen`()
 BEGIN
 select * from benutzer;
 END ;;
+
+DROP PROCEDURE IF EXISTS `BenutzerDatenExistieren`;
 CREATE PROCEDURE `BenutzerDatenExistieren`(
 inname varchar(255),
 inpasswort varchar(255))
 BEGIN
 	select count(*) from benutzer where name=inname and passwort=inpasswort;
 END ;;
+
+DROP PROCEDURE IF EXISTS `BenutzerLoeschen`;
 CREATE PROCEDURE `BenutzerLoeschen`(
 delname varchar(255))
 BEGIN
 delete from benutzer where name=delname;
 END ;;
+
+DROP PROCEDURE IF EXISTS `BenutzerPasswortAendern`;
 CREATE PROCEDURE `BenutzerPasswortAendern`(
 inname varchar(255),
 inpasswort varchar(255)
@@ -263,10 +287,14 @@ update benutzer set
 passwort= inpasswort where 
 name =inname;
 END ;;
+
+DROP PROCEDURE IF EXISTS `BerechtigungAnzeigen`;
 CREATE PROCEDURE `BerechtigungAnzeigen`(in name varchar(100), in passwort varchar(255))
 BEGIN
 	SELECT BerechtigungsID FROM benutzer b WHERE name = b.Name AND passwort = b.Passwort;
 END ;;
+
+DROP PROCEDURE IF EXISTS `DisziplinAendern`;
 CREATE PROCEDURE `DisziplinAendern`(
 did int,
 inName varchar(255),
@@ -281,6 +309,8 @@ BEGIN
     mindestanzahl=inminTeilnehmer,maximalanzahl=inmaxTeilnehmer
     ,teamleistung=inTeamleistung, aktiviert= inaktiviert, KontrahentenAnzahl=inKontrahentenAnzahl where disziplinid =did;
 END ;;
+
+DROP PROCEDURE IF EXISTS `DisziplinAnlegen`;
 CREATE PROCEDURE `DisziplinAnlegen`( inName varchar(255),
  inBeschreibung varchar(255),
  inminTeilnehmer int,
@@ -294,16 +324,22 @@ BEGIN
     values (inName,inBeschreibung,inminTeilnehmer,inmaxTeilnehmer,inTeamleistung,inaktiviert,inKontrahentenAnzahl);
         select last_insert_id();
 END ;;
+
+DROP PROCEDURE IF EXISTS `DisziplinAnzeigen`;
 CREATE PROCEDURE `DisziplinAnzeigen`(
 in id int)
 BEGIN
 Select * from disziplin where disziplinid=id;
 END ;;
+
+DROP PROCEDURE IF EXISTS `DisziplinAnzeigen2`;
 CREATE PROCEDURE `DisziplinAnzeigen2`(
 in id int)
 BEGIN
 Select * from disziplin where disziplinid=id;
 END ;;
+
+DROP PROCEDURE IF EXISTS `DisziplinBearbeiten`;
 CREATE PROCEDURE `DisziplinBearbeiten`(
 did int,
 inName varchar(255),
@@ -318,6 +354,8 @@ BEGIN
     mindestanzahl=inminTeilnehmer,maximalanzahl=inmaxTeilnehmer
     ,teamleistung=inTeamleistung, aktiviert= inaktiviert, KontrahentenAnzahl=inKontrahentenAnzahl where disziplinid =did;
 END ;;
+
+DROP PROCEDURE IF EXISTS `Disziplinen2017`;
 CREATE PROCEDURE `Disziplinen2017`()
 BEGIN
 
@@ -441,45 +479,65 @@ BEGIN
         1);
         
 END ;;
+
+DROP PROCEDURE IF EXISTS `DisziplinenAnzeigen`;
 CREATE PROCEDURE `DisziplinenAnzeigen`()
 BEGIN
 	SELECT * FROM disziplin;
 END ;;
+
+DROP PROCEDURE IF EXISTS `DisziplinLoeschen`;
 CREATE PROCEDURE `DisziplinLoeschen`(did int)
 BEGIN
 	delete from disziplin where DisziplinID= did;
 END ;;
+
+DROP PROCEDURE IF EXISTS `GeschlechtAnzeigen`;
 CREATE PROCEDURE `GeschlechtAnzeigen`(in gid int)
 BEGIN
 	SELECT * FROM geschlecht where GeschlechtsID = gid;
 END ;;
+
+DROP PROCEDURE IF EXISTS `GeschlechterAnzeigen`;
 CREATE PROCEDURE `GeschlechterAnzeigen`()
 BEGIN
 	SELECT * FROM geschlecht;
 END ;;
+
+DROP PROCEDURE IF EXISTS `KlasseAnlegen`;
 CREATE PROCEDURE `KlasseAnlegen`(
 inname varchar(255))
 BEGIN
 		insert into  klasse (name) values (inname);
          SELECT LAST_INSERT_ID(); 
 END ;;
+
+DROP PROCEDURE IF EXISTS `Klasseanzeigen`;
 CREATE PROCEDURE `Klasseanzeigen`(kid int)
 BEGIN
 	select * from klasse where klassenID= kid;
 END ;;
+
+DROP PROCEDURE IF EXISTS `KlasseBearbeiten`;
 CREATE PROCEDURE `KlasseBearbeiten`(inkid int,
 inname varchar(255))
 BEGIN
 	update klasse set name= inname where klassenid=inkid;
 END ;;
+
+DROP PROCEDURE IF EXISTS `Klasseloeschen`;
 CREATE PROCEDURE `Klasseloeschen`(kid int)
 BEGIN
 	delete from klasse where klassenid=kid;
 END ;;
+
+DROP PROCEDURE IF EXISTS `KlassenAnzeigen`;
 CREATE PROCEDURE `KlassenAnzeigen`()
 BEGIN
 	select * from klasse order by Name;
 END ;;
+
+DROP PROCEDURE IF EXISTS `LeistungAendern`;
 CREATE PROCEDURE `LeistungAendern`(
 lid int,
 did int,
@@ -493,14 +551,20 @@ disziplinid= did
 ,schuelerid=sid,klassenid=kid,zeitpunkt=inzeitpunkt 
 where leistungid= lid;
 END ;;
+
+DROP PROCEDURE IF EXISTS `LeistungAnzeigen`;
 CREATE PROCEDURE `LeistungAnzeigen`(lid int)
 BEGIN
 select * from leistung where leistungid =lid;
 END ;;
+
+DROP PROCEDURE IF EXISTS `LeistungenAnzeigen`;
 CREATE PROCEDURE `LeistungenAnzeigen`()
 BEGIN
 select * from Leistung;
 END ;;
+
+DROP PROCEDURE IF EXISTS `LeistungKlasseAnlegen`;
 CREATE PROCEDURE `LeistungKlasseAnlegen`(
 did int,
 kid int,
@@ -511,12 +575,16 @@ BEGIN
 	insert into leistung (disziplinid,klassenid,zeitpunkt) values(did,kid,inzeitpunkt);
 	SELECT LAST_INSERT_ID(); 
 END ;;
+
+DROP PROCEDURE IF EXISTS `LeistungLoeschen`;
 CREATE PROCEDURE `LeistungLoeschen`(
 lid int)
 BEGIN
 delete from leistungsergebnis where  leistungid=lid;
 delete from leistung where leistungid =lid;
 END ;;
+
+DROP PROCEDURE IF EXISTS `LeistungSchuelerAnlegen`;
 CREATE PROCEDURE `LeistungSchuelerAnlegen`(
 did int,
 sid int,
@@ -527,6 +595,8 @@ BEGIN
 	insert into leistung (disziplinid,schuelerid,klassenid,zeitpunkt) values(did,sid,(select klassenid from schueler where schuelerid= sid),inzeitpunkt);
 	SELECT LAST_INSERT_ID(); 
 END ;;
+
+DROP PROCEDURE IF EXISTS `RegelAnlegen`;
 CREATE PROCEDURE `RegelAnlegen`(
     disz_id int,
     expr text,
@@ -537,12 +607,16 @@ BEGIN
     INSERT INTO regel (disziplinid, expr, idx, points) VALUES (disz_id, expr, idx, points);
     SELECT LAST_INSERT_ID() AS "RegelID";
 END ;;
+
+DROP PROCEDURE IF EXISTS `RegelAnzeigen`;
 CREATE PROCEDURE `RegelAnzeigen`(
     in_r_id int
 )
 BEGIN
     SELECT * FROM regel WHERE RegelID = in_r_id;
 END ;;
+
+DROP PROCEDURE IF EXISTS `RegelBearbeiten`;
 CREATE PROCEDURE `RegelBearbeiten`(
     in_rid int,
     in_expr text,
@@ -552,15 +626,21 @@ CREATE PROCEDURE `RegelBearbeiten`(
 BEGIN
     UPDATE regel SET expr = in_expr, idx = in_idx, points = in_points WHERE RegelID = in_rid;
 END ;;
+
+DROP PROCEDURE IF EXISTS `RegelLoeschen`;
 CREATE PROCEDURE `RegelLoeschen`(rid int)
 BEGIN
 	delete from regel where regelid=rid;
 END ;;
+
+DROP PROCEDURE IF EXISTS `RegelnEinerDisziplinAnzeigen`;
 CREATE PROCEDURE `RegelnEinerDisziplinAnzeigen`(did int)
 BEGIN
 select * from regel where disziplinid=did order by idx;
 
 END ;;
+
+DROP PROCEDURE IF EXISTS `SchuelerAendern`;
 CREATE PROCEDURE `SchuelerAendern`(
 	insid int,
     invorname varchar(255),
@@ -577,6 +657,8 @@ GeschlechtsID=ingeschlechtsid
 where 
 schuelerid= insid;
 END ;;
+
+DROP PROCEDURE IF EXISTS `SchuelerAnlegen`;
 CREATE PROCEDURE `SchuelerAnlegen`(
 	
 	invorname varchar(255),
@@ -598,10 +680,14 @@ BEGIN
 	SELECT LAST_INSERT_ID();
  
 END ;;
+
+DROP PROCEDURE IF EXISTS `SchuelerAnzeigen`;
 CREATE PROCEDURE `SchuelerAnzeigen`(sid int)
 BEGIN
 		select * from schueler where schuelerid= sid;
 END ;;
+
+DROP PROCEDURE IF EXISTS `SchuelerEinerDisziplinUndKlasseAnzeigen`;
 CREATE PROCEDURE `SchuelerEinerDisziplinUndKlasseAnzeigen`(kid int, did int)
 BEGIN
 
@@ -609,10 +695,14 @@ SELECT * FROM schueler s, leistung l
 WHERE l.KlassenID = kid AND l. disziplinID = did  AND s.SchuelerID = l.SchuelerID;
 
 END ;;
+
+DROP PROCEDURE IF EXISTS `SchuelerEinerKlasseAnzeigen`;
 CREATE PROCEDURE `SchuelerEinerKlasseAnzeigen`(kid int)
 BEGIN
  SELECT * FROM schueler s WHERE s.KlassenID = kid;
 END ;;
+
+DROP PROCEDURE IF EXISTS `schuelerKlasseLeeren`;
 CREATE PROCEDURE `schuelerKlasseLeeren`()
 BEGIN
 
@@ -632,14 +722,20 @@ BEGIN
 	alter table Anmeldung add index FKAnmeldung976756 (SchuelerID), add constraint FKAnmeldung976756 foreign key (SchuelerID) references Schueler (SchuelerID);
 	
 END ;;
+
+DROP PROCEDURE IF EXISTS `SchuelerLoeschen`;
 CREATE PROCEDURE `SchuelerLoeschen`(sid int)
 BEGIN
 	delete from schueler where schuelerid = sid;
 END ;;
+
+DROP PROCEDURE IF EXISTS `SchuelerPAnzeigen`;
 CREATE PROCEDURE `SchuelerPAnzeigen`()
 BEGIN
 		select * from schueler;
 END ;;
+
+DROP PROCEDURE IF EXISTS `TypAnlegen`;
 CREATE PROCEDURE `TypAnlegen`(
     typ_name tinytext,
     typ_descr text,
@@ -649,12 +745,16 @@ BEGIN
     INSERT INTO typ (typ_name, typ_descr, typ_typ) VALUES (typ_name, typ_descr, typ_typ);
     SELECT * FROM typ WHERE typ_id = LAST_INSERT_ID();
 END ;;
+
+DROP PROCEDURE IF EXISTS `TypAnzeigen`;
 CREATE PROCEDURE `TypAnzeigen`(
     in_typ_id int
 )
 BEGIN
     SELECT * FROM typ WHERE typ_id = in_typ_id;
 END ;;
+
+DROP PROCEDURE IF EXISTS `TypBearbeiten`;
 CREATE PROCEDURE `TypBearbeiten`(
     in_typ_id int,
     in_typ_name tinytext,
@@ -665,10 +765,14 @@ BEGIN
     UPDATE typ SET typ_name = in_typ_name, typ_descr = in_typ_descr, typ_typ = in_typ_typ WHERE typ_id = in_typ_id;
     SELECT * FROM typ WHERE typ_id = in_typ_id;
 END ;;
+
+DROP PROCEDURE IF EXISTS `TypenAnzeigen`;
 CREATE PROCEDURE `TypenAnzeigen`()
 BEGIN
     SELECT * FROM typ;
 END ;;
+
+DROP PROCEDURE IF EXISTS `TypEntfernen`;
 CREATE PROCEDURE `TypEntfernen`(
     in_typ_id int
 )
@@ -676,24 +780,32 @@ BEGIN
     DELETE FROM typzustand WHERE typ_id = in_typ_id;
     DELETE FROM typ WHERE typ_id = in_typ_id;
 END ;;
+
+DROP PROCEDURE IF EXISTS `VariableAnzeigen`;
 CREATE PROCEDURE `VariableAnzeigen`(
     in_var_id int
 )
 BEGIN
     SELECT * FROM variable WHERE var_id = in_var_id;
 END ;;
+
+DROP PROCEDURE IF EXISTS `VariableEntfernen`;
 CREATE PROCEDURE `VariableEntfernen`(
     in_var_id int
 )
 BEGIN
     DELETE FROM variable WHERE var_id = in_var_id;
 END ;;
+
+DROP PROCEDURE IF EXISTS `VariablenAnzeigen`;
 CREATE PROCEDURE `VariablenAnzeigen`()
 BEGIN
 
     SELECT * FROM variable;
 
 END ;;
+
+DROP PROCEDURE IF EXISTS `ZustaendeEinesTypsAnzeigen`;
 CREATE PROCEDURE `ZustaendeEinesTypsAnzeigen`(
     tid int)
 BEGIN
@@ -701,6 +813,8 @@ BEGIN
     SELECT * FROM typzustand where typ_id = tid;
 
 END ;;
+
+DROP PROCEDURE IF EXISTS `ZustandAnlegen`;
 CREATE PROCEDURE `ZustandAnlegen`(
     typ_id int,
     tzst_name tinytext,
@@ -711,12 +825,16 @@ BEGIN
     INSERT INTO typzustand (typ_id, tzst_name, tzst_descr, tzst_val) VALUES (typ_id, tzst_name, tzst_descr, tzst_val);
     SELECT * FROM typzustand WHERE zid = LAST_INSERT_ID();
 END ;;
+
+DROP PROCEDURE IF EXISTS `ZustandAnzeigen`;
 CREATE PROCEDURE `ZustandAnzeigen`(
     in_z_id int
 )
 BEGIN
     SELECT * FROM typzustand WHERE zid = in_z_id;
 END ;;
+
+DROP PROCEDURE IF EXISTS `ZustandBearbeiten`;
 CREATE PROCEDURE `ZustandBearbeiten`(
     in_z_id int,
     in_tzst_name tinytext,
@@ -727,6 +845,8 @@ BEGIN
     UPDATE typzustand SET tzst_name = in_tzst_name, tzst_descr = in_tzst_descr, tzst_val = in_tzst_val WHERE zid = in_z_id;
     SELECT * FROM typzustand WHERE zid = in_z_id;
 END ;;
+
+DROP PROCEDURE IF EXISTS `ZustandEntfernen`;
 CREATE PROCEDURE `ZustandEntfernen`(
     in_z_id int
 )
