@@ -31,10 +31,10 @@ INSERT IGNORE INTO typzustand (typ_id,tzst_name,tzst_val) VALUES
 (@t_stz, "Wassermann", "wassermann");
 
 
-INSERT IGNORE INTO variable (var_id,var_name,var_descr,var_exprParam,typ_id,disz_id,var_sortIndex) VALUES
-(@v_wte_wts,"Weite", "Gesprungene Weite in Metern", "weite", @t_flt,@d_wts,0),
-(@v_stz_elt,"Sternzeichen", "Das Sternzeichen des Teilnehmers", "stz",@t_stz,@d_elt,0),
-(@v_wte_elt,"Weite", "Geflogenen Weite in Metern", "weite", @t_flt,@d_elt,1);
+INSERT IGNORE INTO variable (var_id,var_name,var_descr,var_exprParam,typ_id,disz_id,var_sortIndex,var_sortAsc) VALUES
+(@v_wte_wts,"Weite", "Gesprungene Weite in Metern", "weite", @t_flt,@d_wts,0,0),
+(@v_stz_elt,"Sternzeichen", "Das Sternzeichen des Teilnehmers", "stz",@t_stz,@d_elt,0,1),
+(@v_wte_elt,"Weite", "Geflogenen Weite in Metern", "weite", @t_flt,@d_elt,1,0);
 
 -- Benutzer
 
