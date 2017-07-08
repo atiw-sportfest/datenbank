@@ -731,26 +731,3 @@ BEGIN
 END ;;
 
 DELIMITER ;
-
-INSERT INTO `sportfest`.`benutzer`
-(`Name`,
-`Passwort`,
-`BerechtigungsID`)
-VALUES
-("admin",
-"21232f297a57a5a743894a0e4a801fc3",
-1),
-("ewald",
-"21232f297a57a5a743894a0e4a801fc3",
-1);;
-
-INSERT INTO `sportfest`.`geschlecht`
-(`GeschlechtsID`,
-`Name`)
-VALUES
-(1,
-"männlich"),
-(2,
-"weiblich"),
-(3,
-"beides");
