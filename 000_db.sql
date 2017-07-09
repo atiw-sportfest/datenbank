@@ -138,6 +138,22 @@ CREATE TABLE `leistung` (
 
 
 --
+-- Table structure for table `variable`
+--
+DROP TABLE IF EXISTS `variable`;
+CREATE TABLE `variable` (
+  `var_id` int(11) NOT NULL AUTO_INCREMENT,
+  `var_name` tinytext NOT NULL,
+  `var_descr` text,
+  `var_exprParam` tinytext NOT NULL,
+  `typ_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`var_id`),
+  KEY `FKvariable880404` (`typ_id`),
+  CONSTRAINT `FKvariable880404` FOREIGN KEY (`typ_id`) REFERENCES `typ` (`typ_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+--
 -- Table structure for table `ergebnis`
 --
 

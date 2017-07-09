@@ -21,6 +21,7 @@ CREATE TABLE `regel` (
 ALTER TABLE typ ADD (typ_conv TINYTEXT);
 
 DROP PROCEDURE IF EXISTS BerechtigungAnzeigen;
+DROP PROCEDURE IF EXISTS RegelnEinerDisziplinAnzeigen;
 
 DELIMITER ;;
 CREATE PROCEDURE BerechtigungAnzeigen (
@@ -30,8 +31,6 @@ CREATE PROCEDURE BerechtigungAnzeigen (
 BEGIN
 	SELECT BerechtigungsID FROM benutzer b WHERE name = b.Name AND passwort = b.Passwort;
 END ;;
-
-DROP PROCEDURE IF EXISTS RegelnEinerDisziplinAnzeigen;
 
 CREATE PROCEDURE RegelnEinerDisziplinAnzeigen (
     in_did int
