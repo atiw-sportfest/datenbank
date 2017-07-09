@@ -41,17 +41,20 @@ INSERT IGNORE INTO variable (var_id,var_name,var_descr,var_exprParam,typ_id,disz
 INSERT IGNORE INTO benutzer (name,passwort,berechtigungsid) VALUES
 ("test",md5("test"),1);
 
--- Regeln
+-- Regelsätze, Regeln
 
-INSERT IGNORE INTO `regel` (expr,disziplinid,idx,points) VALUES
-('geschlecht == \"m\" && weite >= 2.4',1000,0,10),
-('geschlecht == \"m\" && weite >= 1.2',1000,1,5),
-('geschlecht == \"m\" && weite >= 0.6',1000,2,2),
-('geschlecht == \"m\" && weite >= 0.3',1000,3,1),
-('geschlecht == \"w\" && weite >= 1.2',1000,4,10),
-('geschlecht == \"w\" && weite >= 0.6',1000,5,5),
-('geschlecht == \"w\" && weite >= 0.3',1000,6,2),
-('geschlecht == \"w\" && weite >= 0.15',1000,7,1);
+INSERT IGNORE INTO regelsatz (rsatz_id,disz_id,rsatz_sort) VALUES
+(1,@d_wts,0)
+;
+INSERT IGNORE INTO `regel` (expr,rsatz_id,idx,points) VALUES
+('geschlecht == \"m\" && weite >= 2.4',1,0,10),
+('geschlecht == \"m\" && weite >= 1.2',1,1,5),
+('geschlecht == \"m\" && weite >= 0.6',1,2,2),
+('geschlecht == \"m\" && weite >= 0.3',1,3,1),
+('geschlecht == \"w\" && weite >= 1.2',1,4,10),
+('geschlecht == \"w\" && weite >= 0.6',1,5,5),
+('geschlecht == \"w\" && weite >= 0.3',1,6,2),
+('geschlecht == \"w\" && weite >= 0.15',1,7,1);
 
 -- Klassen, Schüler
 
