@@ -93,14 +93,14 @@ INSERT INTO `sportfest`.`regelsatz`
 
 INSERT INTO `sportfest`.`regel`
 (`RegelID`,`rsatz_id`,`expr`,`idx`,`points`) VALUES
-(6 ,3,"geschlecht == 'm' && z <= '9:00'",0,10),
-(7 ,3,"geschlecht == 'm' && z <= '11:00'",1, 7),
-(8 ,3,"geschlecht == 'm' && z > '11:00'",2, 4),
-(9 ,3,"geschlecht == 'w' && z <= '11:00'",3,10),
-(10,3,"geschlecht == 'w' && z <= '13:00'",4, 7),
-(11,3,"geschlecht == 'w' && z > '13:00'",5, 4),
-(12,4,"geschlecht == 'm' && counter < 6 && z <= '9:00'",0,4),
-(13,4,"geschlecht == 'w' && counter < 2 && z <= '11:00'",1,4);
+(6 ,3,"geschlecht == \"m\" && z <= \"9:00\"",0,10),
+(7 ,3,"geschlecht == \"m\" && z <= \"11:00\"",1, 7),
+(8 ,3,"geschlecht == \"m\" && z > \"11:00\"",2, 4),
+(9 ,3,"geschlecht == \"w\" && z <= \"11:00\"",3,10),
+(10,3,"geschlecht == \"w\" && z <= \"13:00\"",4, 7),
+(11,3,"geschlecht == \"w\" && z > \"13:00\"",5, 4),
+(12,4,"geschlecht == \"m\" && counter < 6 && z <= \"9:00\"",0,4),
+(13,4,"geschlecht == \"w\" && counter < 2 && z <= \"11:00\"",1,4);
 
 /*----------------
 	 Baseball
@@ -192,8 +192,8 @@ INSERT INTO `sportfest`.`regelsatz`
 
 INSERT INTO `sportfest`.`regel`
 (`RegelID`,`rsatz_id`,`expr`,`idx`,`points`) VALUES
-(22,7,"a = 'gewinner'",0,15),
-(23,7,"a = 'verlierer'",1,8);
+(22,7,"a = \"gewinner\"",0,15),
+(23,7,"a = \"verlierer\"",1,8);
 
 /*----------------
 	 Frisbee
@@ -257,9 +257,9 @@ INSERT INTO `sportfest`.`regelsatz`
 
 INSERT INTO `sportfest`.`regel`
 (`RegelID`,`rsatz_id`,`expr`,`idx`,`points`) VALUES
-(28,9,"a = 'gewinner'",0,20),
-(29,9,"a = 'verlierer'",1,10),
-(30,9,"a = 'unentschieden'",2,14);
+(28,9,"a = \"gewinner\"",0,20),
+(29,9,"a = \"verlierer\"",1,10),
+(30,9,"a = \"unentschieden\"",2,14);
 
 /*----------------
 	Hochsprung
@@ -291,14 +291,14 @@ INSERT INTO `sportfest`.`regelsatz`
 
 INSERT INTO `sportfest`.`regel`
 (`RegelID`,`rsatz_id`,`expr`,`idx`,`points`) VALUES
-(31,10,"geschlecht == 'm' && h1 >= 1.45",0,8),
-(32,10,"geschlecht == 'm' && h1 >= 1.25",1,6),
-(33,10,"geschlecht == 'm' && h1 <  1.25",2,4),
-(34,10,"geschlecht == 'w' && h1 >= 1.30",3,8),
-(35,10,"geschlecht == 'w' && h1 >= 1.10",4,6),
-(36,10,"geschlecht == 'w' && h1 <  1.10",5,4),
-(37,11,"geschlecht == 'm' && counter < 6 && h1 >= 1.25",0,6),
-(38,11,"geschlecht == 'w' && counter < 2 && h1 >= 1.10",1,6);
+(31,10,"geschlecht == \"m\" && h1 >= 1.45",0,8),
+(32,10,"geschlecht == \"m\" && h1 >= 1.25",1,6),
+(33,10,"geschlecht == \"m\" && h1 <  1.25",2,4),
+(34,10,"geschlecht == \"w\" && h1 >= 1.30",3,8),
+(35,10,"geschlecht == \"w\" && h1 >= 1.10",4,6),
+(36,10,"geschlecht == \"w\" && h1 <  1.10",5,4),
+(37,11,"geschlecht == \"m\" && counter < 6 && h1 >= 1.25",0,6),
+(38,11,"geschlecht == \"w\" && counter < 2 && h1 >= 1.10",1,6);
 /*----------------
 	  Hockey
 -----------------*/
@@ -325,9 +325,9 @@ INSERT INTO `sportfest`.`regelsatz`
 
 INSERT INTO `sportfest`.`regel`
 (`RegelID`,`rsatz_id`,`expr`,`idx`,`points`) VALUES
-(39,12,"a = 'gewinner'",0,16),
-(40,12,"a = 'verlierer'",1,12),
-(41,12,"a = 'unentschieden'",2,8);
+(39,12,"a = \"gewinner\"",0,16),
+(40,12,"a = \"verlierer\"",1,12),
+(41,12,"a = \"unentschieden\"",2,8);
 
 /*----------------
    Kistenstapeln
@@ -355,9 +355,9 @@ INSERT INTO `sportfest`.`regelsatz`
 
 INSERT INTO `sportfest`.`regel`
 (`RegelID`,`rsatz_id`,`expr`,`idx`,`points`) VALUES
-(42,13,"a = 'geschafft1'",0,16),
-(43,13,"a = 'geschafft2'",1,12),
-(44,13,"a = 'nicht_geschafft'",2,6);
+(42,13,"a = \"geschafft1\"",0,16),
+(43,13,"a = \"geschafft2\"",1,12),
+(44,13,"a = \"nicht_geschafft\"",2,6);
 
 /*-------------------
 Medizinball-Weitwurf
@@ -390,14 +390,14 @@ INSERT INTO `sportfest`.`regelsatz`
 
 INSERT INTO `sportfest`.`regel`
 (`RegelID`,`rsatz_id`,`expr`,`idx`,`points`) VALUES
-(45,14,"geschlecht == 'm' && w1 >= 12",0,8),
-(46,14,"geschlecht == 'm' && w1 >= 9",1,6),
-(47,14,"geschlecht == 'm' && w1 <  9",2,4),
-(48,14,"geschlecht == 'w' && w1 >= 12",3,8),
-(49,14,"geschlecht == 'w' && w1 >= 9",4,6),
-(50,14,"geschlecht == 'w' && w1 <  8",5,4),
-(51,15,"geschlecht == 'm' && counter < 6 && w1 >= 12",0,4),
-(52,15,"geschlecht == 'w' && counter < 2 && w1 >= 12",1,4);
+(45,14,"geschlecht == \"m\" && w1 >= 12",0,8),
+(46,14,"geschlecht == \"m\" && w1 >= 9",1,6),
+(47,14,"geschlecht == \"m\" && w1 <  9",2,4),
+(48,14,"geschlecht == \"w\" && w1 >= 12",3,8),
+(49,14,"geschlecht == \"w\" && w1 >= 9",4,6),
+(50,14,"geschlecht == \"w\" && w1 <  8",5,4),
+(51,15,"geschlecht == \"m\" && counter < 6 && w1 >= 12",0,4),
+(52,15,"geschlecht == \"w\" && counter < 2 && w1 >= 12",1,4);
 
 /*-------------------
 	Weitsprung
@@ -428,11 +428,11 @@ INSERT INTO `sportfest`.`regelsatz`
 
 INSERT INTO `sportfest`.`regel`
 (`RegelID`,`rsatz_id`,`expr`,`idx`,`points`) VALUES
-(53,16,"geschlecht == 'm' && s1 >= 4.80",0,6),
-(54,16,"geschlecht == 'm' && s1 >= 4.00",1,4),
-(55,16,"geschlecht == 'm' && s1 <  4.00",2,2),
-(56,16,"geschlecht == 'w' && s1 >= 3.80",3,6),
-(57,16,"geschlecht == 'w' && s1 >= 3.00",4,4),
-(58,16,"geschlecht == 'w' && s1 <  3.00",5,2),
-(59,17,"geschlecht == 'm' && counter < 6 && s1 >= 4.80",0,6),
-(60,17,"geschlecht == 'w' && counter < 2 && s1 >= 3.80",1,6);
+(53,16,"geschlecht == \"m\" && s1 >= 4.80",0,6),
+(54,16,"geschlecht == \"m\" && s1 >= 4.00",1,4),
+(55,16,"geschlecht == \"m\" && s1 <  4.00",2,2),
+(56,16,"geschlecht == \"w\" && s1 >= 3.80",3,6),
+(57,16,"geschlecht == \"w\" && s1 >= 3.00",4,4),
+(58,16,"geschlecht == \"w\" && s1 <  3.00",5,2),
+(59,17,"geschlecht == \"m\" && counter < 6 && s1 >= 4.80",0,6),
+(60,17,"geschlecht == \"w\" && counter < 2 && s1 >= 3.80",1,6);
